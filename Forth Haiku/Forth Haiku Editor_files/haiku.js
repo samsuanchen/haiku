@@ -1,7 +1,6 @@
 var NOTES = 10;
 var NOTE_BASE = 10;
 var STEP = 2048;
-
 var all_haikus = {};
 
 var fetcher;
