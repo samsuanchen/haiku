@@ -24,6 +24,12 @@ function start_fetch() {
 
 function core_words() {
   var dict = new Object();
+  var v=mous.innerText.split(/[, a-z]+/).map(function(n){return parseFloat(n)});
+  var mx=v[0], my=v[1], cx=v[2], cy=v[3];
+  dict['mx'] = ['dstack.push('+mx+');'];
+  dict['my'] = ['dstack.push('+my+');'];
+  dict['cx'] = ['dstack.push('+cx+');'];
+  dict['cy'] = ['dstack.push('+cy+');'];
   dict['x'] = ['dstack.push(xpos);'];
   dict['y'] = ['dstack.push(ypos);'];
   dict['t'] = ['dstack.push(time_val);'];
@@ -137,7 +143,7 @@ function mod(v1, v2) {
 function code_tags(src) {
   var tags = [];
   var char_count = src.length;
-  src = src.replace(/[ \r\t]+/, ' ');
+  src = src.replace(/[\r\t]+/, ' ');
   src = src.replace(/[ ]+\n/, '\n');
   src = src.replace(/\n[ ]+/, '\n');
   src = src.replace(/[\n]+/, '\n');
@@ -196,7 +202,6 @@ function optimize(code, result_limit) {
   code = code.slice(0, code.length - 1);
   code[0] = 'var go = function(xpos, ypos) { ' +
             'var time_val=0.0; var work1, work2, work3, work4;';
-
   var dstack = [];
   var rstack = [];
   var cstack = [];

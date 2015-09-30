@@ -14,16 +14,17 @@
 <textarea style="width: 256; height:256" onkeydown="update_tags()" onkeyup="update_tags()" onkeypress="update_tags()" name="code" id="src_code" rows="30">\ 紅隨對角線重複變 20150913 陳爽
 x y + \ 紅光隨對角線變化 從 0 漸增
 \ 亮度 大於 1 視同 1
-5 * 1 mod \ 紅光隨對角線方向 0 到 1 重複變化</textarea>
-<canvas width="256" height="256" onmousemove="mousemove()"></canvas>
+5 * 1 mod \ 紅光隨對角線方向 0 到 1 重複變化</textarea><span id="mous"></span>
+<canvas id="cv" width="256" height="256" onkeyup="onKeyUp()" onclick="onClick()" onmousemove="onMouseMove()"></canvas>
 <a name="animated" style="display: none;">a</a>
 <button type="button" onclick="update()">Update</button>
 <canvas width="null" height="null" style="display: block;"></canvas><canvas width="null" height="null" style="display: none;"></canvas></div><span id="tag_area">style:short | characters:93 | words:28 | lines:4,8,6,10</span>
 <textarea style="display: none" id="dst_code"></textarea>
 <script type="text/javascript" src="./Forth Haiku Editor_files/haiku.js"></script>
 <script type="text/javascript">
-function mousemove(e){
-	console.log(Object.keys(e));
+function onMouseMove(){
+  var x=event.pageX-cv.offsetLeft, y=event.pageY-cv.offsetTop;
+  mous.innerHTML=x+' '+y;
 }
 function update() {
   var src_code = document.getElementById('src_code');

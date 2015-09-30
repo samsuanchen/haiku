@@ -1,3 +1,6 @@
+.crosshair {
+    cursor: crosshair;
+}
 a:link {
   color: white;
   text-decoration: none;
@@ -78,7 +81,7 @@ div.article {
 }
 
 div.haiku_text {
-  font-family: "Courier New"
+  font-family: "²Ó©úÅé"
                Courier
                "Andale Mono"
                "Fixed"
