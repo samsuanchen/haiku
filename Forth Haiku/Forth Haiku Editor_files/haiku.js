@@ -295,7 +295,7 @@ function optimize(code, result_limit) {
   code.push('return [' + dstack.join(', ') + ']; }; go');
 
   // Dump code to console.
-  console.log('----------JSCRIPT:\n' + code.join('\n') + '\n\n\n');
+  //console.log('----------JSCRIPT:\n' + code.join('\n') + '\n\n\n');
 
   // Require no extra stuff on the stacks.
   for (var i = 0; i < code.length; i++) {
@@ -362,7 +362,7 @@ function compile(src_code, result_limit) {
   code.push('return dstack; }; go');
 
   // Dump code to console.
-  console.log('----------UNOPTIMIZED JSCRIPT:\n' + code.join('\n') + '\n\n\n');
+  //console.log('----------UNOPTIMIZED JSCRIPT:\n' + code.join('\n') + '\n\n\n');
 
   // Limit number of steps.
   if (code.length > 2000) return BOGUS;
@@ -587,7 +587,7 @@ function make_fragment_shader(input_code) {
       'return [', 'gl_FragColor = vec4(');
   code = code.join('\n');
 
-  console.log('----------SHADER:\n' + code + '\n\n\n');
+//console.log('----------SHADER:\n' + code + '\n\n\n');
 
   return code;
 }
