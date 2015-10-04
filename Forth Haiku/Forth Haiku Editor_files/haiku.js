@@ -731,7 +731,7 @@ function update_haikus(next) {
     var haiku = haikus[i];
     var code_tag = find_tag(haiku, 'textarea');
     var toggle=code_tag.toggle=code_tag.toggle?'':' ';
-    var code = code_tag.value+toggle;
+    var code = pre_code.value+code_tag.value+toggle;
     // Keep first one for audio.
     if (i == 0 ) { first_code = code; }
     // Create 2d canvas.
@@ -812,7 +812,7 @@ function synth(n, t) {
 // Setup audio pipeline.
 var audio_context;
 try {
-  audio_context = new webkitAudioContext();
+  audio_context = new AudioContext();
 } catch (e) {
 }
 var audio_off = function(t, x) { return [0, 0, 0, 1]; };
