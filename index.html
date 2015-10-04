@@ -7,24 +7,46 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head><body onload="init()" bgcolor="#888"><div class="section">
+
 <div style="display:flex">
 
+<div style="flex:1" width=256 height=256 name="haiku" onclick="onClick()" onmousemove="onMouseMove()">
+   <textarea style="width: 256; height:256" onkeyup="onKeyUp()" id="src_code" rows="30">\ cx,cy 應為畫面上滑鼠所點位置的座標
+: p x cx - ; : q y cy - ;
+: 2pi pi pi + ;
+: a q p atan2 pi + 2pi / ;
+: r p p * q q * + sqrt ;
+: 2/ 2 / ; : 1+ 1 + ;
+: 圓 r > ;
+: 洞 r < ;
+: 線 abs .01 < ; \ f(x,y,t)=0曲線
+: 圈 r - 線 ;
+: 反 1 swap - ;
+: 層 dup >r * dup 1 mod - r> / ;
+: 摺 * 1 mod ;
+: 風扇 t a - 4 摺 0 0 r 7 層 反 .45 圓 * ; \ 風扇
+\ .2 圓 .25 圈 .3 洞
+\ x 10 層 y 10 層 + 2/
+\ x y + 2/ 10 層 
+\ x 1 + y - 2/ 10 層 + 2/
+\ a 20 層
+\ x 5 摺
+t x + sin y - 線</textarea>
+   <a name="animated" style="display: none;">a</a>
+</div>
+<!--
 <div style="flex:1" width=256 height=256 name="haiku" onclick="onClick()" onmousemove="onMouseMove()" class="crosshair">
-<textarea style="width: 256; height:256" onkeyup="onKeyUp()" id="src_code" rows="30"></textarea>
+   <textarea style="width: 256; height:256" onkeyup="onKeyUp()" id="src_code" rows="30"></textarea>
+</div>
+<div style="flex:1" width=256 height=256 name="haiku" onclick="onClick()" onmousemove="onMouseMove()" class="crosshair">
+   <textarea style="width: 256; height:256" onkeyup="onKeyUp()" id="src_code" rows="30"></textarea>
+</div>
+<div style="flex:1" width=256 height=256 name="haiku" onclick="onClick()" onmousemove="onMouseMove()" class="crosshair">
+   <textarea style="width: 256; height:256" onkeyup="onKeyUp()" id="src_code" rows="30"></textarea>
+</div>
+-->
 </div>
 
-<div style="flex:1" width=256 height=256 name="haiku" onclick="onClick()" onmousemove="onMouseMove()" class="crosshair">
-<textarea style="width: 256; height:256" onkeyup="onKeyUp()" id="src_code" rows="30"></textarea>
-</div>
-<div style="flex:2" width=256 height=256 name="haiku" onclick="onClick()" onmousemove="onMouseMove()" class="crosshair">
-<textarea style="width: 256; height:256" onkeyup="onKeyUp()" id="src_code" rows="30"></textarea>
-</div>
-<div style="flex:1" width=256 height=256 name="haiku" onclick="onClick()" onmousemove="onMouseMove()" class="crosshair">
-<textarea style="width: 256; height:256" onkeyup="onKeyUp()" id="src_code" rows="30"></textarea>
-</div>
-</div>
-
-<a name="animated" style="display: none;">a</a>
 <div id="mous"> 000, 000 clicked 000, 000</div>
 <span id="tag_area">style:short | chars:93 | words:28 | lines:4,8,6,10</span>
 
@@ -32,23 +54,22 @@
 <script type="text/javascript">
 var x,y,click={x:0,y:0};
 var e=0.005;
+function onMouseMove(){
+  x=event.pageX/256+e;
+  y=(512-event.pageY)/256+e;
+  if(x>=0 && x<=1 && y>=0 && y<=1)
+  	showMouse(x,y);
+//	update_tags();
+}
+function showMouse(x,y){
+  mous.innerHTML=d4(x)+','+d4(y)+' click at '+d4(click.x)+','+d4(click.y);
+}
 function d4(n){
   if(n>e){
     var v=n.toString().substr(0,4);
     return ' '+v+"00".substr(0,4-v.toString().length);
   }
   return " 0.00"
-}
-function showMouse(x,y){
-  mous.innerHTML=d4(x)+','+d4(y)+' click at '+d4(click.x)+','+d4(click.y);
-}
-function onMouseMove(){
-  x=(event.pageX-cv.offsetLeft)/256+e;
-  y=(256-(event.pageY-cv.offsetTop-256))/256+e;
-  if(x>=0 && x<=1 && y>=0 && y<=1){
-  	showMouse(x,y);
-//	update_tags();
-  }
 }
 function onClick(){
   if(x>=0 && x<=1 && y>=0 && y<=1){
@@ -58,20 +79,13 @@ function onClick(){
 }
 function init() {
   var src=localStorage.getItem('myHaikuSrc');
-  src_code.selectStartOld=src_code.selectStart;
-  src_code.selectEndOld=src_code.selectEnd;
-  if(src)src_code.value=src;
   var c=localStorage.getItem('myClick');
   if(c)click=JSON.parse(c);
   showMouse(x,y);
   animate_haikus(function() {
-  	src_code.selectStart=src_code.selectStartOld;
-    src_code.selectEnd=src_code.selectEndOld;
   });
 }
 function onKeyUp(){
-  src_code.selectStartOld=src_code.selectStart;
-  src_code.selectEndOld=src_code.selectEnd;
   update_tags();
 }
 function update_tags() {
@@ -81,13 +95,6 @@ function update_tags() {
   var c=JSON.stringify(click);
   if(c!==localStorage.getItem('myClick'))
     localStorage.setItem('myClick',c);
-//var changed=src.trimRight();		// 
-//if(src===changed)changed+=' ';	// make sure source is changed
-//src_code.value=changed;			// for recompiling
-  var m=s.match(/^[^\n]+( ?\n)/), r=m[1], n=r.length, t=n==1?' \n':'\n';
-  src_code.selectStartOld=src_code.selectStart;
-  src_code.selectEndOld=src_code.selectEnd;
-  src_code.value=s.replace(r,t)
   tag_area.innerHTML = code_tags(s).join(' | ');
 }
 </script></div></body></html>

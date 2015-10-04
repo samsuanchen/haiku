@@ -730,9 +730,10 @@ function update_haikus(next) {
   for (var i = 0; i < haikus.length; i++) {
     var haiku = haikus[i];
     var code_tag = find_tag(haiku, 'textarea');
+    var toggle=code_tag.toggle=code_tag.toggle?'':' ';
+    var code = code_tag.value+toggle;
     // Keep first one for audio.
-    if (i == 0 ) { first_code = code_tag.value; }
-    var code = code_tag.value;
+    if (i == 0 ) { first_code = code; }
     // Create 2d canvas.
     var canvas2d = find_tag_name(haiku, 'canvas', 'canvas2d');
     if (canvas2d == null) {

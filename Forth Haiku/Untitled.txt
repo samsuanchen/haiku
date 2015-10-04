@@ -1,0 +1,44 @@
+𫴫貝招畐𧳒豸隹
+邏羅(寶貝(𩀨從(䞃致招)))
+
+\ cx,cy 為畫面上滑鼠所點位置的座標
+: p x cx - ; : q y cy - ;
+: 2pi pi pi + ;
+: a q p atan2 pi + 2pi / ;
+: r p p * q q * + sqrt ;
+: 2/ 2 / ; : 1+ 1 + ;
+: 圓 r > ;
+: 洞 r < ;
+: 線 abs .01 < ; \ f(x,y,t)=0曲線
+: 圈 r - 線 ;
+: 反 1 swap - ;
+: 層 dup >r * dup 1 mod - r> / ;
+: 摺 * 1 mod ;
+\ .2 圓 .25 圈 .3 洞
+\ x 10 層 y 10 層 + 2/
+\ x y + 2/ 10 層 
+\ x 1 + y - 2/ 10 層 + 2/
+\ a 20 層
+\ x 5 摺
+: 風扇 t a - 4 摺 0 0 r 7 層 反 .45 圓 * ; \ 風扇
+t x + sin y - 線
+
+
+\ 頂角數
+: n 12 ;
+\ 頂角 角度之半
+: alpha pi n / ;
+\ 頂角外接圓半徑
+: r0 0.3 ;
+\ 2倍 圓周率 (全圓)
+: 2pi 2 pi * ;
+\ 原點 移到中心
+: x x .5 - ; : y y .5 - ;
+\ 任意點 x,y 至原點與 x 軸的夾角
+: a y x atan2 ;
+\ 任意點 x,y 至原點 距離
+: r x x * y y * + sqrt ; \ x,y
+: beta a 2pi n / mod pi n / - abs ;
+: b r0 alpha sin * alpha cos beta sin * beta cos alpha sin * + / ;
+r b < r .16 > and
+r .1 < or dup r .4 <

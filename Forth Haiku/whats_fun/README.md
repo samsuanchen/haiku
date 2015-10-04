@@ -1,11 +1,5 @@
-# what's fun?
+# 趣味
 
-## Emerald Necklace - Manwe
+* [Emerald Necklace Redux - 陳爽](http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAtZ-LCQw)
+* [Emerald Necklace - Manwe](http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDAwv2ECQw)
 
-http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDAwv2ECQw
-
-## Emerald Necklace Redux - 陳爽
-
-http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDAwv2ECQw
-
-##
