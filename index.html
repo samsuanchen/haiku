@@ -35,24 +35,24 @@
 <div style="flex:1" width=256 height=256 name="haiku" onclick="onClick()" onmousemove="onMouseMove()">
    <textarea style="width: 256; height:256" onkeyup="onKeyUp()" id="src_code" rows="30">\ cx,cy 應為畫面上滑鼠所點位置的座標
 : 風扇
-  t a - 4 摺 \ 紅 4葉風扇正轉
+  角 t + 4 摺 \ 紅 4葉風扇正轉
   0 \ 無 綠
   0 \ 無 藍
   距 7 層 反  .45 圓 *  \ 透視
-; \ 風扇
+;   風扇
 \ .2 圓 .25 圈 .3 洞
 \ x 10 層 y 10 層 + 2/
 \ x y + 2/ 10 層 
 \ x 1 + y - 2/ 10 層 + 2/
 \ a 20 層
 \ x 5 摺
-  : t t 5 縮 ; \ t 慢 5 倍
-  : x x t + ; \ x 原點 隨 t 左移
-  : x x 2pi * 3 * ; \ x 區間放大
-  : y y .5 移 ; \ y 原點 移到 中間
-  : y y 4 放 ; \ y 區間放大
-  : f x sin ; \ f 為 x 的 正旋波
-  y f 暈 \ y 等於 f 的暈
+\ : t t 5 縮 ; \ t 慢 5 倍
+\ : x x t + ; \ x 原點 隨 t 左移
+\ : x x 2pi * 3 * ; \ x 區間放大
+\ : y y .5 移 ; \ y 原點 移到 中間
+\ : y y 4 放 ; \ y 區間放大
+\ : f x sin ; \ f 為 x 的 正旋波
+\ y f 暈 \ y 等於 f 的暈
 \ y f 線 \ y 等於 f 的線
 \ 角 t - 3 摺 \ 3葉扇正轉
 \ 角 t + 3 摺 \ 3葉扇反轉
