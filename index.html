@@ -12,26 +12,58 @@
 
 <div style="flex:1" width=256 height=256 name="haiku" onclick="onClick()" onmousemove="onMouseMove()">
    <textarea style="width: 256; height:256" onkeyup="onKeyUp()" id="src_code" rows="30">\ cx,cy 應為畫面上滑鼠所點位置的座標
+: 2pi pi pi + ; \ 2倍圓周率
+\ : cx .5 ; : cy .5 ; \ p,q 原點
+\ cx,cy 應可預設為點滑鼠定原點
 : p x cx - ; : q y cy - ;
-: 2pi pi pi + ;
-: a q p atan2 pi + 2pi / ;
-: r p p * q q * + sqrt ;
+: 角 q p atan2 pi + 2pi / ;
+: 距 p p * q q * + sqrt ;
 : 2/ 2 / ; : 1+ 1 + ;
-: 圓 r > ;
-: 洞 r < ;
-: 線 abs .01 < ; \ f(x,y,t)=0曲線
-: 圈 r - 線 ;
+: 內 ( r v -- b ) < ; \ 距<v 區
+: 外 ( r v -- b ) > ; \ 距>v 區
+: 圓 ( v -- b ) 距 > ; \ 距<v 區
+: 洞 ( v -- b ) 距 < ; \ 距>v 區
+: 線 ( r v -- b )
+  - abs .01 < ; \ f(x,y,t)=0
+: 圈 距 線 ;
 : 反 1 swap - ;
+: 暈 - .2 ** 反 ; \ f(x,y,t)=0
 : 層 dup >r * dup 1 mod - r> / ;
 : 摺 * 1 mod ;
-: 風扇 t a - 4 摺 0 0 r 7 層 反 .45 圓 * ; \ 風扇
-\ .2 圓 .25 圈 .3 洞
-\ x 10 層 y 10 層 + 2/
+: 間 ( r L U -- b ) >r over
+  ( r L r ) < ( r b ) swap r> 
+  ( b r U ) < and ;
+: 風扇
+  t 角 - 4 摺 \ 紅 4葉風扇正轉
+  0 \ 無 綠
+  0 \ 無 藍
+  距 7 層 反 .9 **
+  距 .1 .45 間
+  *  \ 透視
+;
+\ 風扇
+  .2 圓 .25 圈 .3 洞
+\ x 10 層 y 10 層 + 2 /
 \ x y + 2/ 10 層 
-\ x 1 + y - 2/ 10 層 + 2/
+\ x 1 + y - 2/ 10 層 + 2 /
 \ a 20 層
 \ x 5 摺
-t x + sin y - 線</textarea>
+: 移 ( x n -- v ) - ; \ x左移n
+: 放 ( x n -- v ) * ; \ x區放n倍
+: 縮 ( x n -- v ) / ; \ x區縮n倍
+\ : t t 5 縮 ; \ t 慢 5 倍
+\ : x x t + ; \ x 原點 隨 t 左移
+\ : x x 2pi * 3 * ; \ x 區間放大
+\ : y y .5 移 ; \ y 原點 移到 中間
+\ : y y 4 放 ; \ y 區間放大
+\ : f x sin ; \ f 為 x 的 正旋波
+\ y f 暈 \ y 等於 f 的暈
+\ y f 線 \ y 等於 f 的線
+\ 角 t - 3 摺 \ 3葉扇正轉
+\ 角 t + 3 摺 \ 3葉扇反轉
+\ 距 t - 3 摺 \ 3圈放射
+\ y x / 1 摺
+</textarea>
    <a name="animated" style="display: none;">a</a>
 </div>
 <!--
