@@ -15,8 +15,11 @@
 \ : cx .5 ; : cy .5 ; \ p,q 原點
 \ cx,cy 應可預設為點滑鼠定原點
 : p x cx - ; : q y cy - ;
-: 角 q p atan2 pi + 2pi / ;
-: 距 p p * q q * + sqrt ;
+: 角 ( -- 角 ) \ p,q 到 原點 角度
+\ 0 表 -pi   1 表 pi
+  q p atan2 pi + 2pi / ;
+: 距 ( -- 距 ) \ p,q 到 原點 距離
+  p p * q q * + sqrt ;
 : 內 ( 距 v -- b ) < ; \ 距<v 區
 : 外 ( 距 v -- b ) > ; \ 距>v 區
 : 圓 ( v -- b ) 距 > ; \ 距<v 區
