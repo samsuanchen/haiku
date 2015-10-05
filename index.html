@@ -20,8 +20,10 @@
   q p atan2 pi + 2pi / ;
 : 距 ( -- 距 ) \ p,q 到 原點 距離
   p p * q q * + sqrt ;
-: 內 ( 距 v -- b ) < ; \ 距<v 區
-: 外 ( 距 v -- b ) > ; \ 距>v 區
+: 內 ( x v -- b ) < ; \ x<v 區
+: 外 ( x v -- b ) > ; \ x>v 區
+: 間 ( x L U -- b ) \ x 在 L U 間
+  >r over r> < >r > r> and ;
 : 圓 ( v -- b ) 距 > ; \ 距<v 區
 : 洞 ( v -- b ) 距 < ; \ 距>v 區
 : 線 ( r v -- b )
