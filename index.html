@@ -36,6 +36,11 @@
 : 移 ( x n -- v ) - ; \ x左移n
 : 放 ( x n -- v ) * ; \ x區放n倍
 : 縮 ( x n -- v ) / ; \ x區縮n倍
+: 絕對 ( x -- v ) abs ; \ 取x絕對值
+: 負 ( x -- v ) negate ; \ 取x負值
+: 方 ( r -- b ) \ 邊長2*r方
+  p abs over < swap q abs > * ;
+
 </textarea>
 <div style="flex:1" width=256 height=256 name="haiku" onclick="onClick()" onmousemove="onMouseMove()">
    <textarea style="width: 256; height:256" onkeyup="onKeyUp()" id="src_code" rows="30">\ cx,cy 應為畫面上滑鼠所點位置的座標
