@@ -314,7 +314,8 @@ function compile(src_code, result_limit) {
   var dict = core_words();
   var pending_name = 'bogus';
   var code_stack = [];
-  var paren_comment = false;
+//var paren_comment = false;		// for nested paren 20151007 陳爽
+  var paren_comment = 0;			// for nested paren 20151007 陳爽
   src_code = src_code.replace(/[ \r\t]+/g, ' ').trim();
   var lines = src_code.split('\n');
   for (var j = 0; j < lines.length; j++) {
@@ -322,9 +323,14 @@ function compile(src_code, result_limit) {
     for (var i = 0; i < src.length; i++) {
       var word = src[i];
       word = word.toLowerCase();
+      if (word == '(') {			// for nested paren 20151007 陳爽
+    	paren_comment++;			// for nested paren 20151007 陳爽
+    	continue;					// for nested paren 20151007 陳爽
+      }								// for nested paren 20151007 陳爽
       if (paren_comment) {
         if (word == ')') {
-          paren_comment = false;
+      //  paren_comment = false;	// for nested paren 20151007 陳爽
+          paren_comment--;			// for nested paren 20151007 陳爽
         }
         continue;
       }
@@ -334,9 +340,6 @@ function compile(src_code, result_limit) {
         code = code.concat(dict[word]);
       } else if (word == '\\') {
         break;
-      } else if (word == '(') {
-        paren_comment = true;
-        continue;
       } else if (word == ':') {
         i++;
         pending_name = src[i];
