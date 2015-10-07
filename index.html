@@ -10,11 +10,14 @@
 
 <div style="display:flex">
 <textarea id="pre_code" hidden=1>
-( comment1 ( comment2 ) comment3 )
 : 2pi pi pi + ;
 : 2/ 2 / ; : 1+ 1 + ;
+: r ( -- r ) \ 中心 到 x,y 距離
+  x x * y y * + sqrt ;
+: a ( -- a ) \ 中心 到 x,y 角度
+  y x atan2 pi + 2pi / ;
 \ : cx .5 ; : cy .5 ; \ p,q 原點
-\ cx,cy 應可預設為點滑鼠定原點
+\ cx,cy 為 p,q 原點
 : p x cx - ; : q y cy - ;
 : 角 ( -- 角 ) \ p,q 到 原點 角度
 \ 0 表 -pi   1 表 pi
@@ -47,72 +50,40 @@
 </textarea>
 <div style="flex:1" width=256 height=256 name="haiku" onclick="onClick()" onmousemove="onMouseMove()">
    <textarea style="width: 256; height:256" onkeyup="onKeyUp()" id="src_code" rows="30">\ cx,cy 應為畫面上滑鼠所點位置的座標
-\ 反斜線空格後 文字忽略 作註解
-\ 左右刮號間 文字也忽略 作註解
-
-( A. 圓圈洞 與 紅綠藍透
-  .1 圓 \ 半徑 0.1 圓 紅色面 r
-  .2 圈 \ 半徑 0.2 圈 綠色面 g
-  .3 洞 \ 半徑 0.3 洞 藍色面 b
-  .4 圓 \ 半徑 0.4 圓 透視面 a
-\ 建議: 數值 測試區間 0.0 到 0.5 )
-
-( B. 距角內外間反
-\ 距 \ 原點 到 任意點 距離
-\ 角 \ 原點 到 任意點 角度
-  距 .2 內 \ 半徑 0.2 圓 紅
-  距 .3 外 \ 半徑 0.3 洞 綠
-  角 0 .6 間 \ 角度 -180 到 36 藍
-  .4 洞 反 \ 半徑 0.4 圓 透
-\ 註1 洞 反 即是 圓, 圓 反 即是 洞
-\ 註2 紅藍重疊變 紫, 綠藍重疊變 青
-\ 建議: 距 測試區間 0.0 到 0.5
-\ 建議: 角 測試區間 0.0 到 1.0 )
-
-( C. xypq 間方
-\ x 左右 0 到 1
-\ y 下上 0 到 1
-\ p 左右 值隨 滑鼠點 變區間
-\ q 下上 值隨 滑鼠點 變區間
-  .1       方 \ 紅 滑鼠點 變位置
-  x  .3 .7 間 \ 綠
-  q -.2 .2 間 \ 藍 滑鼠點 變位置
-  .4       方 \ 透 滑鼠點 變位置
-\ 建議: p q 測試區間 -0.5 到 0.5
-\ 建議: x y 測試區間 0.0 到 1.0 )
-
-( D. xy層格摺格
-\ x y *
-\ x 5 摺 y 5 摺 *
-\ x y 5 摺格
-  x 5 層 y 5 層 *
-  x y 5 層格
-\ t 1 mod )
-
-\ 距 9 層 反 \ 9圈漸層
-\ 距 9 摺 \ 9圈
-\ 距 t 移 9 摺 \ 每秒9圈放射
-\ 角 9 層 
-\ x 5 摺
-\ x 10 層   y 10 層 + 2 縮
-\ x y + 2 縮 10 層 
-\ x 1 + y - 2 縮 10 層 + 2 縮
-\ : t t 5 縮 ; \ t 慢 5 倍
-\ : x x t 移 ; \ x 原點 隨 t 移
-\ : x x 2pi 放 3 放 ; \ x 區放大
-\ : y y .5 移 ; \ y 原點 移到中間
-\ : y y 4 放 ; \ y 區放大 4 倍
-  : f x ; \ f 為 x 的 正旋波
-\ y f 暈 \ y 等於 f 的暈
-  y f 線 \ y 等於 f 的線
-\ 角 t 移 3 摺 \ 3葉扇正轉
-\ 角 t 負 移 3 摺 \ 3葉扇反轉
-: 風扇
-  角 t - 4 摺 \ 紅 4葉風扇正轉
-  0 \ 無 綠
-  0 \ 無 藍
-  距 7 層 反  .45 圓 *  \ 透視
-; \ 風扇</textarea>
+\ derived from "Clock Cutout"
+: 橫心 x .5 - ; \ 橫軸 -.5 ~ .5 
+: 縱心 y .5 - ; \ 縱軸 -.5 ~ .5
+: x ( t -- x(t) ) dup cos 橫心 *
+  swap sin 縱心 * - ; \ 橫軸向右正
+: y ( t -- y(t) ) dup sin 橫心 *
+  swap cos 縱心 * + ; \ 縱軸向上正
+: 畫針 ( t p1 p2 -- v ) >r >r >r
+  r@ ( t ) y abs 1.012 - negate 
+  200 **
+  r> ( y(t) t ) x
+  r> ( y(t) x(t) p2 ) - abs
+  r> ( y(t) x'(t) p1 ) < * ;
+: 轉角 2 * 1.5 + pi * ;
+: 秒針 t floor 60 / 轉角
+  .14 .23 畫針 10 / ;
+: 分針 t     3600 / 轉角
+  .12 .17 畫針  3 / ;
+: 時針 t    43200 / 轉角
+  .05 .11 畫針      ;
+: 心 橫心 縱心 ; : sq dup * ;
+: r 心 sq swap sq + sqrt ;
+: 時標 心 atan2  6 * .5 pi * +
+  sin abs 9 ** 
+  r .39  > r .43 < *  * + ;
+: 分標 心 atan2 30 * .5 pi * +
+  sin abs 9 **
+  r .422 > r .43 < *  * + ;
+: flip 1 swap - ;
+: 秒標 分標 ;
+秒針 秒標 ( 紅 ) 分針 分標 ( 綠 )
+時針 時標 ( 藍 )
+: 去框 橫心 2 * sq 縱心 2 * sq
+  + 9 ** flip ; 去框</textarea>
    <a name="animated" style="display: none;">a</a>
 </div>
 <!--
