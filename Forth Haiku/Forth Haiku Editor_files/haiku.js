@@ -25,9 +25,9 @@ function start_fetch() {
 function core_words() {
   var dict = new Object();
   var v=mous.innerText.split(/[, a-z]+/).map(function(n){return parseFloat(n)});
-  var mx=v[0], my=v[1], cx=v[2], cy=v[3];
-  dict['mx'] = ['dstack.push('+mx+');'];
-  dict['my'] = ['dstack.push('+my+');'];
+  var cx=v[2], cy=v[3] //, mx=v[0], my=v[1];
+//dict['mx'] = ['dstack.push('+mx+');'];
+//dict['my'] = ['dstack.push('+my+');'];
   dict['cx'] = ['dstack.push('+cx+');'];
   dict['cy'] = ['dstack.push('+cy+');'];
   dict['x'] = ['dstack.push(xpos);'];
