@@ -336,6 +336,12 @@ function compile(src_code, result_limit) {
       }
       if (word == '') {
         continue;
+      } else if (word == 'crosshair+') {
+      	document.getElementsByTagName('canvas')[0].className='crosshair';
+        continue;
+      } else if (word == 'crosshair-') {
+      	document.getElementsByTagName('canvas')[0].className='';
+        continue;
       } else if (word in dict) {
         code = code.concat(dict[word]);
       } else if (word == '\\') {
