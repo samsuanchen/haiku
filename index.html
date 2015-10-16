@@ -237,7 +237,30 @@
 .5 0 .5 1 兩點線 +
 .3 .3 .6 .3 兩點線
 .7 .3 .7 .3 兩點線
-\ )</textarea>
+\ )
+\ 從點 x,y 向角 a 發出的線
+: 點角線 ( x y a -- )
+  .25 - \ 向上
+  2pi * \ 值域 -pi 到 pi
+  >r swap ( y0 x0 ) over y -
+  over x - atan2 r@ + pi + cos 
+ -rot ( a0 y0 x0 )
+  r@ sin x rot - * ( a0 y0 fx )
+  swap ( a0 fx y0 ) swap over r>
+  cos y rot - * ( a0 y0 fx fy )
+  + abs 1- 150 ** \ 角a 心線 
+  ( a0 線 ) * * ;
+\ .3 .3 .125 lin .8 .8 .625 lin 
+\ .5 .5 t floor 60 / lin
+: x1 .1 ; : y1 .2 ;
+: x2 .3 ; : y2 .9 ;
+: a1 x2 x1 - y2 y1 - atan2
+  2pi / ;
+: a2 x1 x2 - y1 y2 - atan2
+  2pi / ;
+.5 .5 0 點角線
+x1 y1 a1 點角線
+x2 y2 a2 點角線 *</textarea>
    <a name="animated" style="display: none;">a</a>
 </div>
 <!--

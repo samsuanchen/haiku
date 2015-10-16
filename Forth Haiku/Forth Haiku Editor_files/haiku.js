@@ -50,7 +50,8 @@ function core_words() {
                   'dstack.push(work2);',
                   'dstack.push(work1);',
                   'dstack.push(work2);'];
-
+  dict['pick'] = ['work1 = dstack[dstack.length-3-dstack.pop()];',
+  	  			  'dstack.push(work1);'];
   dict['2dup'] = dict['over'].concat(dict['over']);
   dict['z+'] = ['work1 = dstack.pop();',
                 'work2 = dstack.pop();',
@@ -214,6 +215,17 @@ function optimize(code, result_limit) {
         code[i] = code[i].replace(/dstack\.pop\(\)/, tmp);
         continue;
       }
+      if (code[i].search(/dstack\.length/) >= 0) {
+        code[i] = code[i].replace(/dstack\.length/, tmp_index);
+        continue;
+      }
+      var p=/dstack\[(.+?)\]/, m=code[i].match(p);
+      if (m) {
+      	var j;
+      	eval('j='+m[1]);
+        code[i] = code[i].replace(p, dstack[j]);
+        continue;
+      }
       if (code[i].search(/rstack\.pop\(\)/) >= 0) {
         if (rstack.length === 0) return BOGUS;
         var tmp = rstack.pop();
@@ -226,13 +238,15 @@ function optimize(code, result_limit) {
     if (m) {
       var tmp = 'temp' + tmp_index++;
       code[i] = 'var ' + tmp + ' = ' + m[1] + ';';
-      dstack.push(tmp);
+    //dstack.push(tmp);		// 陳爽 20151016
+      dstack.push(m[1]);	// 陳爽 20151016
     }
     var m = code[i].match(/^rstack\.push\((.*)\);$/);
     if (m) {
       var tmp = 'temp' + tmp_index++;
       code[i] = 'var ' + tmp + ' = ' + m[1] + ';';
-      rstack.push(tmp);
+    //rstack.push(tmp);		// 陳爽 20151016
+      rstack.push(m[1]);	// 陳爽 20151016
     }
     var m = code[i].match(/^if\((.*)\) \{$/);
     if (m) {
