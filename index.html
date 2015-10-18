@@ -78,6 +78,28 @@
     swap x 線 *
    then
   then ;
+  
+  
+: 線粗 .01 ;
+: 點角向 \ x1 y1 a -- 圖
+  .25 - \ 向上
+  1 mod
+  2pi * \ 值域 -pi 到 pi
+  >r y - swap x - atan2 r> +
+  pi + cos ;
+: 點角線 \ x0 y0 a -- 圖
+  .25 - \ 向上
+  1 mod
+  2pi * \ 值域 -pi 到 pi
+  >r
+  2dup r@ 點角向
+  -rot swap \ m y0 x0
+  r@ sin x rot - * \ m y0 fx
+  swap \ m fx y0
+  r> cos y rot - * \ m fx fy
+  + abs 1- 線粗 2/ - 15000 **
+  \ m 角a心線 
+  * ;
 </textarea>
 <div style="flex:1" width=256 height=256 name="haiku" onclick="onClick()" onmousemove="onMouseMove()">
    <textarea style="width: 256; height:256" onkeyup="onKeyUp()" id="src_code" rows="30">\ cx,cy 應為畫面上滑鼠所點位置的座標
@@ -235,39 +257,22 @@
 \ )
 
 \ H 從點 x,y 向角 a 發出的線
-: 線粗 .01 ;
-: 點角線 \ x y a -- 圖
-  .25 - \ 向上
-  1 mod
-  2pi * \ 值域 -pi 到 pi
-  >r swap \ y0 x0
-  over y -
-  over x - atan2 r@ + pi + cos 
-  -rot \ m y0 x0
-  r@ sin x rot - * \ m y0 fx
-  swap \ m fx y0
-  r> cos y rot - * \ m fx fy
-  + abs 1- 線粗 2/ - 15000 **
-  \ m 角a心線 
-  * ;
-\ .3 .3 .125 lin .8 .8 .625 lin 
-\ .5 .5 t floor 60 / lin
+
 : x1 .1 ; : y1 .4 ;
 : x2 .6 ; : y2 .8 ;
 : a1 x2 x1 - y2 y1 - atan2
-  2pi / ;
-: a2 x1 x2 - y1 y2 - atan2
   2pi / ;
 \ 紅色參考格線
   x 10 摺 .05 <
   y 10 摺 .05 < +
 \ 綠色點角線
-  .5 .5 a1 點角線
-\ 藍色兩點線
-  x1 y1 a1 點角線
-  x2 y2 a1 .5 - 點角線 *
-\ )
-</textarea>
+  .5 .5 a1 點角線 +
+\ 綠色兩點線
+  x1 y1 x2 y2 兩點線
+\ 藍色兩點區間
+  x1 y1 a1 .5 + 點角向
+  x2 y2 a1 點角向 *
+\ )</textarea>
    <a name="animated" style="display: none;">a</a>
 </div>
 <!--
