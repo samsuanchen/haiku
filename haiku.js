@@ -1,6 +1,7 @@
 var NOTES = 10;
 var NOTE_BASE = 10;
 var STEP = 2048;
+
 var all_haikus = {};
 
 var fetcher;
@@ -24,12 +25,6 @@ function start_fetch() {
 
 function core_words() {
   var dict = new Object();
-  var v=mous.innerText.split(/[, a-z]+/).map(function(n){return parseFloat(n)});
-  var cx=v[2], cy=v[3] //, mx=v[0], my=v[1];
-//dict['mx'] = ['dstack.push('+mx+');'];
-//dict['my'] = ['dstack.push('+my+');'];
-  dict['cx'] = ['dstack.push('+cx+');'];
-  dict['cy'] = ['dstack.push('+cy+');'];
   dict['x'] = ['dstack.push(xpos);'];
   dict['y'] = ['dstack.push(ypos);'];
   dict['t'] = ['dstack.push(time_val);'];
@@ -50,8 +45,7 @@ function core_words() {
                   'dstack.push(work2);',
                   'dstack.push(work1);',
                   'dstack.push(work2);'];
-  dict['pick'] = ['work1 = dstack[dstack.length-3-dstack.pop()];',
-  	  			  'dstack.push(work1);'];
+
   dict['2dup'] = dict['over'].concat(dict['over']);
   dict['z+'] = ['work1 = dstack.pop();',
                 'work2 = dstack.pop();',
@@ -144,7 +138,7 @@ function mod(v1, v2) {
 function code_tags(src) {
   var tags = [];
   var char_count = src.length;
-  src = src.replace(/[\r\t]+/, ' ');
+  src = src.replace(/[ \r\t]+/, ' ');
   src = src.replace(/[ ]+\n/, '\n');
   src = src.replace(/\n[ ]+/, '\n');
   src = src.replace(/[\n]+/, '\n');
@@ -203,6 +197,7 @@ function optimize(code, result_limit) {
   code = code.slice(0, code.length - 1);
   code[0] = 'var go = function(xpos, ypos) { ' +
             'var time_val=0.0; var work1, work2, work3, work4;';
+
   var dstack = [];
   var rstack = [];
   var cstack = [];
@@ -213,17 +208,6 @@ function optimize(code, result_limit) {
         if (dstack.length === 0) return BOGUS;
         var tmp = dstack.pop();
         code[i] = code[i].replace(/dstack\.pop\(\)/, tmp);
-        continue;
-      }
-      if (code[i].search(/dstack\.length/) >= 0) {
-        code[i] = code[i].replace(/dstack\.length/, tmp_index);
-        continue;
-      }
-      var p=/dstack\[(.+?)\]/, m=code[i].match(p);
-      if (m) {
-      	var j;
-      	eval('j='+m[1]);
-        code[i] = code[i].replace(p, dstack[j]);
         continue;
       }
       if (code[i].search(/rstack\.pop\(\)/) >= 0) {
@@ -238,15 +222,13 @@ function optimize(code, result_limit) {
     if (m) {
       var tmp = 'temp' + tmp_index++;
       code[i] = 'var ' + tmp + ' = ' + m[1] + ';';
-    //dstack.push(tmp);		// 陳爽 20151016
-      dstack.push(m[1]);	// 陳爽 20151016
+      dstack.push(tmp);
     }
     var m = code[i].match(/^rstack\.push\((.*)\);$/);
     if (m) {
       var tmp = 'temp' + tmp_index++;
       code[i] = 'var ' + tmp + ' = ' + m[1] + ';';
-    //rstack.push(tmp);		// 陳爽 20151016
-      rstack.push(m[1]);	// 陳爽 20151016
+      rstack.push(tmp);
     }
     var m = code[i].match(/^if\((.*)\) \{$/);
     if (m) {
@@ -309,7 +291,7 @@ function optimize(code, result_limit) {
   code.push('return [' + dstack.join(', ') + ']; }; go');
 
   // Dump code to console.
-  //console.log('----------JSCRIPT:\n' + code.join('\n') + '\n\n\n');
+  console.log('----------JSCRIPT:\n' + code.join('\n') + '\n\n\n');
 
   // Require no extra stuff on the stacks.
   for (var i = 0; i < code.length; i++) {
@@ -328,8 +310,8 @@ function compile(src_code, result_limit) {
   var dict = core_words();
   var pending_name = 'bogus';
   var code_stack = [];
-//var paren_comment = false;		// for nested paren 20151007 陳爽
-  var paren_comment = 0;			// for nested paren 20151007 陳爽
+//var paren_comment = false;	// 20151101 sam for nesting paren
+  var paren_comment = 0;	// 20151101 sam for nesting paren
   src_code = src_code.replace(/[ \r\t]+/g, ' ').trim();
   var lines = src_code.split('\n');
   for (var j = 0; j < lines.length; j++) {
@@ -337,29 +319,26 @@ function compile(src_code, result_limit) {
     for (var i = 0; i < src.length; i++) {
       var word = src[i];
       word = word.toLowerCase();
-      if (word == '(') {			// for nested paren 20151007 陳爽
-    	paren_comment++;			// for nested paren 20151007 陳爽
-    	continue;					// for nested paren 20151007 陳爽
-      }								// for nested paren 20151007 陳爽
-      if (paren_comment) {
+      if (word == '(') {		// 20151101 sam for nesting paren
+		  paren_comment++;	// 20151101 sam for nesting paren
+        continue;			// 20151101 sam for nesting paren
+      }				// 20151101 sam for nesting paren
+if (paren_comment) {
         if (word == ')') {
-      //  paren_comment = false;	// for nested paren 20151007 陳爽
-          paren_comment--;			// for nested paren 20151007 陳爽
+        //paren_comment = false;	// 20151101 sam for nesting paren
+          paren_comment--;		// 20151101 sam for nesting paren
         }
         continue;
       }
       if (word == '') {
         continue;
-      } else if (word == 'crosshair+') {
-      	document.getElementsByTagName('canvas')[0].className='crosshair';
-        continue;
-      } else if (word == 'crosshair-') {
-      	document.getElementsByTagName('canvas')[0].className='';
-        continue;
       } else if (word in dict) {
         code = code.concat(dict[word]);
       } else if (word == '\\') {
         break;
+  //  } else if (word == '(') {	// 20151101 sam for nesting paren
+//	  paren_comment = true;		// 20151101 sam for nesting paren
+  //	  continue;			// 20151101 sam for nesting paren
       } else if (word == ':') {
         i++;
         pending_name = src[i];
@@ -383,10 +362,8 @@ function compile(src_code, result_limit) {
     }
   }
   code.push('return dstack; }; go');
-
   // Dump code to console.
-  //console.log('----------UNOPTIMIZED JSCRIPT:\n' + code.join('\n') + '\n\n\n');
-
+  console.log('----------UNOPTIMIZED JSCRIPT:\n' + code.join('\n') + '\n\n\n');
   // Limit number of steps.
   if (code.length > 2000) return BOGUS;
   code = optimize(code, result_limit);
@@ -610,7 +587,7 @@ function make_fragment_shader(input_code) {
       'return [', 'gl_FragColor = vec4(');
   code = code.join('\n');
 
-//console.log('----------SHADER:\n' + code + '\n\n\n');
+  console.log('----------SHADER:\n' + code + '\n\n\n');
 
   return code;
 }
@@ -753,10 +730,9 @@ function update_haikus(next) {
   for (var i = 0; i < haikus.length; i++) {
     var haiku = haikus[i];
     var code_tag = find_tag(haiku, 'textarea');
-    var toggle=code_tag.toggle=code_tag.toggle?'':' ';
-    var code = pre_code.value+code_tag.value+toggle;
     // Keep first one for audio.
-    if (i == 0 ) { first_code = code; }
+    if (i == 0 ) { first_code = code_tag.value; }
+    var code = code_tag.value;
     // Create 2d canvas.
     var canvas2d = find_tag_name(haiku, 'canvas', 'canvas2d');
     if (canvas2d == null) {
@@ -796,7 +772,8 @@ function update_haikus(next) {
       animated.name = 'animated';
       animated.href = '/haiku-animated';
       animated.style.display = 'none';
-      haiku.insertBefore(animated, haiku.firstChild);
+    //haiku.insertBefore(animated, haiku.firstChild);	// sam 20151103
+      haiku.appendChild(animated);						// sam 20151103
     }
     // Add to the work queue.
     work.push([canvas2d, canvas3d, animated, code]);

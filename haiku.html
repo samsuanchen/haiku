@@ -1,13 +1,14 @@
 <html>
 <head><meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<title>方寸幻彩</title>
+<title>方寸幻彩 操作平台</title>
 <meta http-equiv="X-UA-Compatible" content="chrome=1">
 <link rel="stylesheet" type="text/css" href="haiku.css"/>
 
 <meta name="viewport" content="width=600">
 <meta name="viewport" content="initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-status-bar-style"
+ content="black-translucent"/>
 </head>
 
 <body onload="init()" bgcolor="#000000">
@@ -15,7 +16,11 @@
 <span id="editimage" name="haiku"
     width="256" height="256">
 <textarea style="display: none" id="dst_code"></textarea>
-</span><span class="mouse">(0.0,0.0)</span>
+ </span>
+<br>
+<div class="publish">
+(0.0,0.0)
+</div>
 <textarea style="width: 256; height:100; resize:both"
     onkeydown="update_tags()"
     onkeyup="update_tags()"
@@ -530,7 +535,7 @@ function init() {
 
 //3. 在 canvas 增加 onmousemove 顯示滑鼠位置
      var canvas0=document.getElementsByTagName('canvas')[0];
-     var p=document.getElementsByClassName('mouse')[0];
+     var p=document.getElementsByClassName('publish')[0];
      canvas0.style.cursor='move';
      canvas0.onmousemove=function onMouseMove(){
        var x=event.pageX/256-.04, y=1.06-event.pageY/256;

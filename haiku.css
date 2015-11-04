@@ -1,10 +1,8 @@
-canvas.crosshair {
-    cursor: crosshair;
-}
 a:link {
   color: white;
   text-decoration: none;
 }
+
 a:visited {
   color: white;
   text-decoration: none;
@@ -68,7 +66,6 @@ div.links a {
 
 div.section {
   background-color: #777777;
-  background-image: url('/static/back.png');
   border-style: solid;
   border-width: 0;
   border-color: #000000;
@@ -81,7 +78,7 @@ div.article {
 }
 
 div.haiku_text {
-  font-family: "²Ó©úÅé"
+  font-family: "Courier New"
                Courier
                "Andale Mono"
                "Fixed"
