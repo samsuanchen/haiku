@@ -1,6 +1,6 @@
 <html>
 <head><meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<title>方寸幻彩</title>
+<title>方寸彩繪</title>
 <meta http-equiv="X-UA-Compatible" content="chrome=1">
 <link rel="stylesheet" type="text/css" href="haiku.css"/>
 
@@ -16,17 +16,80 @@
     width="256" height="256">
 <textarea style="display: none" id="dst_code"></textarea>
 </span><span class="mouse">(0.0,0.0)</span>
-<textarea style="width: 256; height:100; resize:both"
+<textarea style="width: 100%; height:100; resize:both"
     onkeydown="update_tags()"
     onkeyup="update_tags()"
     onkeypress="update_tags()"
-    name="code" id="src_code" cols="40" rows="10">\ 方寸幻彩 範例 2015/11/01 陳爽
-
-\ 請在 google chrome 瀏覽器操作
-( 可參考 Brad Nelson 的 Forth Haiku )
+    name="code" id="src_code" cols="40" rows="10">\ 方寸彩繪 基本範例集 2015/11/08 陳爽
 
 \ 反斜線空格後 文字忽略 當作註解
 \ 左右刮號之間 文字忽略 也作註解
+\ 請在 google chrome 瀏覽器開啟此網頁
+( 此網頁源自 Brad Nelson 的 Forth Haiku )
+
+\ ( I 國旗飄揚 \ 列首反斜線變空格就跳過此例
+\ ( I1 旗桿左右移動 週期 2 秒
+: x x t 2 / sin 2 + 8 / - ; \ )
+: 桿 x 0 > x .02 < *
+  x .01 - 2 ** y .98 - 2 ** +
+  sqrt .02 < + ; 
+\ ( I2 改 x y 值域 0 到 2
+: x x 2 * ; : y y 2 * ; \ )
+\ ( I3 國旗上下升降 週期 8 秒
+: y y t 8 / sin 1 + 2 / - ; \ )
+\ ( I4 國旗迎風飄動
+: y  x 3 /  t 6 /  pi 8 /
+  mod - pi * 10 * cos 40 / \ 水平波動 dy
+  y + 1.1 * ; \ )
+\ ( I5 改值域 x 0 到 4, y -3 到 1
+: x x 2 * ; : y y 2 * 1 - ; \ )
+: r \ 日心 到 x,y 距離
+  x .5 - 2 ** y .5 - 2 ** + sqrt ;
+: θ \ 日心 到 x,y 角 徑度
+  x .5 - y .5 - atan2 ;
+: n 12 ;
+: α \ n角星 內頂角 徑度 的 一半
+  pi 9 / ; \ 改 9 為 2 即 n邊形
+: a 2 pi * n / ; : h a 2 / ;
+: β \ n 道 光芒
+  θ a mod h - abs ;
+: n角星 α sin .3 *
+  α cos β sin *  β cos α sin * + / r > ;
+: 洞 r .17 > ; : 圓 r .1 < ;
+: 日 n角星	\ 12 角星
+     洞 *	\ 挖洞
+     圓 +	\ 加圓
+;
+: 天 y 0 > y .9 < *  x .1 > * x 1 <  * ;
+: 反 \ 反亮度, 原來 0 變 1, 原來 1 變 0
+  1 swap - ;
+: 地 天 反 y abs .9 < * x .1 > * x 2 < * ; 
+: 幽暗大地 0 0 0 ; \ RGB 亮度歸零
+: 藍天晨曦 \ 加 右上角 藍天
+  x y + .1 * + ; 
+: 綠野山嵐 \ 加 左下角 綠野
+  swap
+  .1 x y + 2 / .1 * - +
+  swap ; 
+: 國旗飄揚 \ 青天白日滿地紅
+  rot 地 + 日 +
+  rot 日 +
+  rot 天 + 
+;
+: 升上桿頭 \ 升上 白色旗桿
+  rot 桿 +
+  rot 桿 +
+  rot \ 桿 + \ 若 rot 後 反斜線 改為 空格, 桿 變 白色
+;
+\ ( I6 範例展示
+  幽暗大地
+  藍天晨曦
+  綠野山嵐
+  國旗飄揚
+  升上桿頭 \ )
+\ )
+
+\ 其他基本指令及範例
 
 ( 例00 紅光亮度 0
   \ 註 非認定的文字及數字 皆為 0
@@ -336,70 +399,79 @@ p0 角 0 .1 間 \ 角度 -180 到 36 B
 : 秒 t floor ; \ 捨小數 取整數 
 : 分 t 60 / ;
 : 時 t 3600 / ;
+: 層 ( 亮度 係數 -- 層 )
+  >r
+  r@ x    y    * < * \ 右下
+  r@ x 反 y    * < * \ 左下
+  r@ x    y 反 * < * \ 右上
+  r> x 反 y 反 * < * \ 左上
+;
+: x x .5 - ; : y y .5 - ;
 : r \ 中心到 x,y 的距離, 1 到邊
-  x .5 - dup * y .5 - dup *
-  + sqrt ;
+  x 2 ** y 2 ** + sqrt ;
 : a \ 中心到 x,y 的角度, 0 到 1
-  y .5 - x .5 - atan2
-  pi + pi / 2 / ;
+  y x atan2 pi + pi / 2 / ;
 \ 中心發 角 t 線
 : 格 \ t n -- 線
-/ .25 - \ 0 向上
+  / .25 - \ 使 0 指向上
   2pi * \ 值域 -pi 到 pi
   >r \ 角度儲存備用
-  r@ sin x .5 - *
-  r@ cos y .5 - *
+  r@ sin x * \ 2 *
+  r@ cos y *
   + abs 1.005 - 150 ** \ 角a 心線 
   r> 2pi / a + .5 - 2pi * cos *
  ; \ 去 角a+pi 線
+: 圓 ( 半徑 -- 圓 ) r > ;
+: 洞 ( 半徑 -- 洞 ) r < ;
+: 圈 ( 半徑 寬 -- 圈 ) r -rot 2 / >r dup r@ - swap r> + 間 ;
 : 秒針
   秒 60 格 \ 每秒走 1/60 圈
-  r .05 .37 間 * \ 秒針起訖端點
-  r .03 .05 間 + \ 中心紅圈
-; 秒針 \ 顯示 紅色秒針
-: 秒標 60 2pi * \ 60 週期
-  a * cos \ 餘旋波
-  .93 > \ 振幅大於.93 設定 時標 長
-  r .41 .43 間 * \ 設定 秒標 寬
-; 秒標 + \ 紅色秒標
+  r .06 .37 間 * \ 秒針起訖端點
+  .04 圓 +
+;
+: 秒標 60 \ 60 週期
+  2pi * a * cos \ 餘旋波
+  .94 > \ 振幅大於.94 定 標寬
+  r .41 .43 間 * \ 定 標長
+;
+: 刻標 4 \ 4 週期
+  2pi * a * cos \ 餘旋波
+  .98 > \ 振幅大於.98 定 標寬
+  r .40 .43 間 * \ 定 標長
+;
 : 分針
   分 60 格 \ 每分走 1/60 圈
-  r .07 .32 間 * \ 分針起訖端點
-  r .05 .07 間 + \ 中心綠圈
-; 分針 \ 顯示 綠色分針
-: 時標 12 2pi * \ 12 週期
-  a * cos \ 餘旋波
-  .97 > \ 振幅大於.97 設定 時標 長
-  r .41 .425 間 * \ 設定 時標 寬
-; 時標 + \ 綠色時標
+  r .06 .32  間 * \ 分針起訖端點
+  .03 .02 圈 +
+;
+: 時標 12 \ 12 週期
+  2pi * a * cos \ 餘旋波
+  .97 > \ 振幅大於.97 定 標寬
+  r .41 .425 間 * \ 定 標長
+;
 : 時針
   時 12 格 \ 每時走 1/12 圈
-  r .09 .3 間 * \ 時針起訖端點
-  r .07 .09 間 + \ 中心藍圈
-; 時針 \ 顯示 藍色時針
-: 框 \ v -- 框
-  x    y    * .001 > * \ 右下黑
-  x 反 y    * .001 > * \ 左下黑
-  x    y 反 * .001 > * \ 右上黑
-  x 反 y 反 * .001 > * \ 左上黑
+  r .06 .27 間 * \ 秒針起訖端點
+  .01 .02 圈 +
 ;
- .5 框 \ 亮度 .5
-\ 藍色盤面 \\\\\\\\\\\\\\\\\\\
- .3 \ 亮度 .3
- x    y    * .009 > * \ 右下紅
- x 反 y    * .009 > * \ 左下紅
- x    y 反 * .009 > * \ 右上紅
- x 反 y 反 * .009 > * \ 左上紅
- + \ 增中間亮度為 .8
- .2 \ 綠色亮度 .2
- x    y    * .022 > * \ 右下紅
- x 反 y    * .022 > * \ 左下紅
- x    y 反 * .022 > * \ 右上紅
- x 反 y 反 * .022 > * \ 左上紅
- + \ 增中間紅色亮度為 1
- r .39 > *
- + \ 半徑 .39 洞
- 1 框 \ )
+: 框 ( 亮度 -- 框 ) .001 層 ;
+: 盤 ( -- 盤 )
+  .5      框   \ 亮度 .5 框
+  .3 .009 層 + \ 亮度 .8 層
+  .2 .022 層 + \ 亮度 1. 層
+  .4      洞 *
+;
+\ (
+  秒針   \ 紅色秒針
+  秒標 + \ 紅色秒標
+  刻標 + \ 紅色秒標
+  時標 + \ 紅色時標
+  分針   \ 綠色分針
+  時標 + \ 綠色時標
+  時針   \ 藍色時針
+  盤   + \ 盤面裝飾 增加層次感
+  1 框   \ 輪廓
+\ )
 
 ( H 從點 x,y 向角 a 發出的線
 
@@ -416,80 +488,48 @@ p0 角 0 .1 間 \ 角度 -180 到 36 B
 \ x1 y1 x2 y2 兩點線
 \ 藍色兩點區間
 \ x1 y1 a1 .5 + 點角向
-\ x2 y2 a1 點角向 * * \ )
-
-\ I 國旗飄揚
-\ ( I1 旗桿左右移動 週期 2 秒
-: x x t 2 / sin 2 + 8 / - ; \ )
-: 桿 x 0 > x .02 < *
-  x .01 - 2 ** y .98 - 2 ** +
-  sqrt .02 < + ; 
-\ ( I2 改 x y 值域 0 到 2
-: x x 2 * ; : y y 2 * ; \ )
-\ ( I3 國旗上下升降 週期 8 秒
-: y y t 8 / sin 1 + 2 / - ; \ )
-\ ( I4 國旗迎風飄動
-: y  x 3 /  t 6 /  pi 8 /
-  mod - pi * 10 *
-  cos 40 / \ 水平波動 dy
-  y + 1.1 * ; \ )
-\ ( I5 改值域 x 0 到 4, y -3 到 1
-: x x 2 * ; : y y 2 * 1 - ; \ )
-: r \ 日心 到 x,y 距離
-  x .5 - 2 **
-  y .5 - 2 ** + sqrt ;
-: θ \ 日心 到 x,y 角 徑度
-  x .5 - y .5 - atan2 ;
-: n 12 ;
-: α \ n角星 內頂角 徑度 的 一半
-  pi 9 / ; \ 改 9 為 2 即 n邊形
-: a 2 pi * n / ; : h a 2 / ;
-: β \ n 道 光芒
-  θ a mod h - abs ;
-\ θ pi / 1 + 2 /
-: n角星 α sin .3 *
-  α cos β sin *  β cos α sin * +
-  / r > ;
-: 洞 r .17 > ; : 圓 r .1 < ;
-: 日
-  n角星
-  洞 *
-  圓 +
-;
-: 天 y 0 > y .9 < *
-  x .1 > * x 1 < * ;
-: 地 1 天 - y abs .9 < *
-  x .1 > * x 2 < * ; 
-: 幽暗大地 0 0 0 ; \ RGB 亮度歸零
-: 藍天晨曦 \ 加 右上角 藍天晨曦
-  x y + .1 * + ; 
-: 綠野山嵐 \ 加 左下角 綠野山嵐
-  swap
-  .1 x y + 2 / .1 * - +
-  swap ; 
-: 國旗飄揚 \ 青天白日滿地紅
-  rot 日 + 地 +
-  rot 日 +
-  rot 天 + 
-;
-: 升上桿頭 \ 升上 白色旗桿
-  rot 桿 +
-  rot 桿 +
-  rot 桿 + ;
-\ ( I6 範例展示
-  幽暗大地
-  藍天晨曦
-  綠野山嵐
-  國旗飄揚
-  升上桿頭 \ )
-\ )</textarea>
+\ x2 y2 a1 點角向 * * \ )</textarea>
 
 <div id="tag_area" hidden=1></div>
 </div>
 </div>
 
 <script type="text/javascript" src="haiku.js"></script>
+<script src="jquery.js"></script>
 <script type="text/javascript">
+$(document).ready(function(){
+   var $textareas = $('textarea#src_code');
+   // restore textarea size
+   var h=localStorage.getItem('src_code.style.height');
+   if(h){
+   		var w=localStorage.getItem('src_code.style.width' );
+   		$textareas.outerWidth(w), $textareas.outerHeight(h); 
+   }
+   var t=localStorage.getItem('src_code.scrollTop');
+   if(t)
+   		src_code.scrollTop=t;
+   // store init (default) state   
+   $textareas.data('x', $textareas.outerWidth());
+   $textareas.data('y', $textareas.outerHeight()); 
+   $textareas.mouseup(function(){
+      var $this = $(this);
+      if (  $this.outerWidth()  != $this.data('x') 
+         || $this.outerHeight() != $this.data('y') )
+      {   // Resize Action Here
+		localStorage.setItem('src_code.style.width',
+			$this.outerWidth());
+		localStorage.setItem('src_code.style.height',
+			$this.outerHeight());
+      }
+      // store new height/width
+      $this.data('x', $this.outerWidth());
+      $this.data('y', $this.outerHeight()); 
+   });
+   src_code.onscroll=function(event){
+   	  localStorage.setItem('src_code.scrollTop',src_code.scrollTop);
+   }
+});
+
 var f3=function (f){
 	var s=f.toString();
 	s=s.replace(/^0\./,'.'),s=s.substr(0,3);
@@ -510,13 +550,13 @@ function update() {
 function update_tags(){
 	var t=src_code.value;
 	if(t){
-		localStorage.setItem('方寸幻彩程式碼',t); // 隨時備存 程式碼
+		localStorage.setItem('src_code.value',t); // 隨時備存 程式碼
 		tag_area.innerHTML= code_tags(t).join(' | ');
 	}
 }
 function init() {
 //1. 用 localStorage.getItem 在 網頁重新啟動後 取回 程式碼
-	var s=localStorage.getItem('方寸幻彩程式碼');
+	var s=localStorage.getItem('src_code.value');
 	if(typeof(s)==='string') src_code.value=s;
 	else {
 		s=src_code.value;
@@ -538,14 +578,6 @@ function init() {
        p.innerHTML=h.replace(/\(.*?\)/,'('+f3(x)+','+f3(y)+')');
      }
 }
-
-//5. 輸入格 放大 可調 並隨時備存 style 下次自動依備存 style 恢復
-src_code.style.width =localStorage.getItem('src_code.style.width' )||'100%';
-src_code.style.height=localStorage.getItem('src_code.style.height')||'400';
-src_code.onresize=function(event){
-	saveSize();
-};
-
 </script>
 </body>
 </html>
