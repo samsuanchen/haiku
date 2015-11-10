@@ -1,6 +1,6 @@
 # A. 方寸彩繪 簡介
 
-直接開啟 [方寸幻彩](http://rawgit.com/samsuanchen/haiku/master/) 或 [http://rawgit.com/samsuanchen/haiku/master/](http://rawgit.com/samsuanchen/haiku/master/) 網頁就可在雲端啟動這奇妙動畫的操作平台，看到一個範例，一面國旗迎風飄揚。
+直接開啟 [方寸彩繪](http://rawgit.com/samsuanchen/haiku/master/) 或 [http://rawgit.com/samsuanchen/haiku/master/](http://rawgit.com/samsuanchen/haiku/master/) 網頁就可在雲端啟動這奇妙動畫的操作平台，看到一個範例，一面國旗迎風飄揚。
  
 **方寸彩繪** 源自 [Brad Nelson](http://bradn123.github.io/) 的 [Forth Haiku Salon](http://forthsalon.appspot.com/), 也可參考 [Forth Haiku for the Impatient](https://docs.google.com/presentation/d/1EIHuFRrKioeZCgfAGFLg7IqBDGzbiQ7IMDmWt2T8jok/edit#slide=id.g7b3b339a9_08)。
 為了在台灣向普羅大眾有效推廣，我們簡化了操作畫面，擴充了操作功能，並中文化，包括: meta 設定 charset=UTF-8 使網頁 title 可用中文，隨時備存 程式碼 到 localStorage，每次網頁啟動時 自動 恢復最後修訂的 程式碼 與 scroll 位置，顯示滑鼠位置，程式碼中 左括號指令 自動配對到對應的 右括號，程式碼輸入格寬高操作者可自行調整並以 localStorage 記住，直接複製網頁 [index.html](https://github.com/samsuanchen/haiku/blob/master/index.html) 加上所需 [haiku.css](https://github.com/samsuanchen/haiku/blob/master/haiku.css)，[haiku.js](https://github.com/samsuanchen/haiku/blob/master/haiku.js)，與 [jquery.js](https://github.com/samsuanchen/haiku/blob/master/jquery.js) 就可離線運作， ... 等等。
@@ -23,17 +23,10 @@ R 紅 G 綠 B 藍光的亮度 與 透明度，以產生畫面整體所呈現各�
 * (　左刮號空格後,　直到對應的　右刮號 token, 文字忽略 也作註解
 
 ## B.4. 未定定義 的 token 當作 數值 來解析
-* 例如 表示 1 的 token 可以有許多不同的寫法: 1 1. 1.0 1.00 .1e1 .1E1 .10e1 .10E1 0.10e1 0.10E1 等等都為 1。
-
-### 數值 0
-
-* 0 -0 0. .0 0.0 0.00 0e0
-* 其他 既非 指令 又非 數值 的 字串 都視同 0
+* 例如 表示 1 的 token 可以有許多不同的寫法: 1 1. 1.0 1.00 .1e1 .1E1 .10e1 .10E1 0.10e1 0.10E1 等等都為 1。再者, 0 -0 0. .0 0.0 0.00 0e0 等等以及 其他 既非 指令 又非 數值 的 字串 都視同 0。
 
 
-## 0 與 1
-
-## 顏色
+## B.5. 數值代表顏色
 
 ### 黑色
 
