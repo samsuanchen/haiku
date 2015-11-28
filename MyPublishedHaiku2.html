@@ -1,0 +1,1115 @@
+
+<!-- saved from url=(0167)http://forthsalon.appspot.com/haiku-search?s=%E9%99%B3%E7%88%BD&cursor=CkAKEgoGYXV0aG9yEggaBumZs-eIvRImahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAjfOMCgwYACAA&phase=1 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Haiku Gallery</title>
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<link rel="stylesheet" type="text/css" href="./ForthHaikuSalon_files/forthsalon.css">
+
+<link href="http://forthsalon.appspot.com/favicon.ico" rel="SHORTCUT ICON">
+<link href="http://forthsalon.appspot.com/favicon.png" rel="apple-touch-icon-precomposed">
+<meta name="viewport" content="width=600">
+<meta name="viewport" content="initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<script async="" src="./ForthHaikuSalon_files/analytics.js"></script><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','./ForthHaikuSalon_files/analytics.js','ga');
+
+  ga('create', 'UA-57431218-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+
+<body onload="init();" bgcolor="#000000">
+<div id="wrapper">
+
+<div id="header">
+  <div style="float:right">
+    <form action="http://forthsalon.appspot.com/haiku-search">
+      <input type="text" size="10" name="s" value="陳爽">
+      <input type="submit" value="🔍">
+    </form>
+  </div>
+  <h1>Haiku Search</h1>
+</div>
+
+<div class="section">
+
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAzoiNCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAzoiNCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">\ derived from "Clock Cutout"
+: 橫心 x .5 - ; \ 橫軸 -.5 ~ .5 
+: 縱心 y .5 - ; \ 縱軸 -.5 ~ .5
+: x ( t -- x(t) ) dup cos 橫心 *
+  swap sin 縱心 * - ; \ 橫軸向右正
+: y ( t -- y(t) ) dup sin 橫心 *
+  swap cos 縱心 * + ; \ 縱軸向上正
+: 畫針 ( t p1 p2 -- v ) &gt;r &gt;r &gt;r
+  r@ ( t ) y abs 1.012 - negate 
+  200 **
+  r&gt; ( y(t) t ) x
+  r&gt; ( y(t) x(t) p2 ) - abs
+  r&gt; ( y(t) x'(t) p1 ) &lt; * ;
+: 轉角 2 * 1.5 + pi * ;
+: 秒針 t floor 60 / 轉角
+  .14 .23 畫針 10 / ;
+: 分針 t     3600 / 轉角
+  .12 .17 畫針  3 / ;
+: 時針 t    43200 / 轉角
+  .05 .11 畫針      ;
+: 心 橫心 縱心 ; : sq dup * ;
+: r 心 sq swap sq + sqrt ;
+: 時標 心 atan2  6 * .5 pi * +
+  sin abs 9 ** 
+  r .39  &gt; r .43 &lt; *  * + ;
+: 分標 心 atan2 30 * .5 pi * +
+  sin abs 9 **
+  r .422 &gt; r .43 &lt; *  * + ;
+: flip 1 swap - ;
+: 秒標 分標 ;
+秒針 秒標 ( 紅 ) 分針 分標 ( 綠 )
+時針 時標 ( 藍 )
+: 去框 橫心 2 * sq 縱心 2 * sq
+  + 9 ** flip ; 去框</textarea>
+<canvas width="128" height="128" style="display: none;"></canvas></span>
+<b>夜光錶</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAmZmNCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAmZmNCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">\ 國旗飄揚 \ 列首反斜線變空格就跳過此例
+: dy x .3 * ; \ 使國旗隨 x 下垂
+\ ( I1 旗桿左右移動 週期 2 秒
+: x x t .5 / sin 2 + 8 / - ; \ )
+: 桿 x 0 &gt; x .02 &lt; *
+  x .01 - 2 ** y .98 - 2 ** +
+  sqrt .02 &lt; + ; 
+\ ( I2 改 x y 值域 0 到 2
+: x x 2 * ; : y y 2 * ; \ )
+\ ( I3 國旗上下升降 週期 8 秒
+: y y t 8 / sin 1 + 2 / - ; \ )
+\ ( I4 國旗迎風飄動
+: y  x 3 /  t 6 /  pi 8 /
+  mod - pi * 10 * cos 40 / \ 水平波動 dy
+  dy + \ 國旗隨 x 下垂 
+  y + 1.15 * ;
+\ )
+\ ( I5 改值域 x 0 到 4, y -3 到 1
+: x x 2 * ;
+: y y 2 * 1.3 - ; \ )
+: r \ 日心 到 x,y 距離
+  x .5 - 2 ** y .5 - 2 ** + sqrt ;
+: θ \ 日心 到 x,y 角 徑度
+  x .5 - y .5 - atan2 ;
+: n 12 ;
+: α \ n角星 內頂角 徑度 的 一半
+  pi 9 / ; \ 改 9 為 2 即 n邊形
+: a 2 pi * n / ; : h a 2 / ;
+: β \ n 道 光芒
+  θ a mod h - abs ;
+: n角星 α sin .3 *
+  α cos β sin *  β cos α sin * + / r &gt; ;
+: 洞 r .17 &gt; ; : 圓 r .1 &lt; ;
+: 日 n角星	\ 12 角星
+     洞 *	\ 挖洞
+     圓 +	\ 加圓
+;
+: 天 y 0 &gt; y .9 &lt; *  x .1 &gt; * x 1 &lt;  * ;
+: 反 \ 反亮度, 原來 0 變 1, 原來 1 變 0
+  1 swap - ;
+: 地 天 反 y abs .9 &lt; * x .1 &gt; * x 2 &lt; * ; 
+: 幽暗大地 0 0 0 ; \ RGB 亮度歸零
+: 藍天晨曦 \ 加 右上角 藍天
+  x y + .1 * + ; 
+: 綠野山嵐 \ 加 左下角 綠野
+  swap
+  .1 x y + 2 / .1 * - +
+  swap ; 
+: 國旗飄揚 \ 青天白日滿地紅
+  rot 地 + 日 +
+  rot 日 +
+  rot 天 + 
+;
+: 升上桿頭 \ 升上 白色旗桿
+  rot 桿 +
+  rot 桿 +
+  rot \ 桿 + \ 若 rot 後 反斜線 改為 空格, 桿 變 白色
+;
+\ ( I6 範例展示
+  幽暗大地
+  藍天晨曦
+  綠野山嵐
+  國旗飄揚
+  升上桿頭 \ )
+\ )</textarea>
+<canvas width="128" height="128" style="display: none;"></canvas></span>
+<b>國旗飄揚升上桿頭 Redux</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAy6eNCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAy6eNCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">\ n by n fans
+: n 2 ; 
+\ x y 區間 從 0 到 1 分別重複 n 次
+: x x n * 1 mod ;
+: y y n * 1 mod ;
+\ x y 每區間改變 分別從 -1 到 1
+: x x .5 - 2 * ;
+: y y .5 - 2 * ;
+\ a 為 點 x,y 到中心 與橫軸夾角
+: a y x atan2 ;
+\ r 為 點 x,y 到中心 距離
+: r x x * y y * + sqrt ;
+\ m 為 風扇葉片數
+: m 6 ;
+.3 \ 暗紅底色
+\ 風扇葉片 ===============
+\ a 區間 從 0 到 2 pi 重複 m 次
+a t - 2 pi * m / mod \ 葉片寬度
+r .3 &gt; * r .85 &lt; * \ 葉片尺寸
+r .2 &lt; .6 * + \ 軸承尺寸
+dup .7 * \ 青綠色葉片
+\ 風扇外罩 ===============
+: t t 10 / ; \ 外罩轉動慢 10 倍
+: 線 .38 + .4 mod abs .37 &lt; ;
+: 縱 a t - sin r * 線 ;
+: 橫 a t - cos r * 線 ;
+: 圈 r 線 r .96 &lt; * ;
+縱 橫 * 圈 * \ 透視效果
+</textarea>
+<canvas width="128" height="128" style="display: none;"></canvas></span>
+<b>n by n fans</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICA9amPCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICA9amPCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">\ 中秋月朦朧
+: x x .5 - ; : y y .5 - ; \ 座標原點移到中心
+: r x x * y y * + sqrt ; \ x,y 點對應的 r
+1 r - \ 中心亮 (值為 1) 外圍暗 (值為 0 及 負)
+1.4 * \ 設定大小 (2 為全圓)
+15 t 3 * sin 3 * - \ 動態值 (變化從 10 到 20)
+pow dup .8 * \ 紅+綠＝黃 月
+.3 \ 藍天</textarea>
+<canvas width="128" height="128" style="display: none;"></canvas></span>
+<b>moon festival</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDAirmQCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDAirmQCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: r x .5 - 2 ** y .5 - 2 ** + 5 * ; : a x 10 - y 10 - atan2 ; : sine push a * t 30 / sin dup * 20 * pop * + sin r .5 - 5 * - sqrt 1 swap - ; : t 2 swap ** t 99 / sin 1 + * ;
+4 t x sine  3 t x y + sine
+2 t y sine  1 t x y - sine .1 **</textarea>
+</span>
+<b>string theory Redux</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAy8SQCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAy8SQCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: n 6 ; ( n Columns ) : a 1 n / ;
+: q a 2 * mod a &gt; ;
+x y 1.75 * + q    x y 1.75 * - q
+2dup and -rot     x 2 * q push
+not r@ and
+swap not pop not and</textarea>
+</span>
+<b>Cubes Redux</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDAks-SCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDAks-SCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: x x .5 - 6 * t .9 * sin + ;
+: y y .5 - 6 * t .2 * sin + ;
+: r x x * y y * + sqrt ;
+: a y x atan2 pi 8 / t sin * + ;
+: x a cos r * ; : y a sin r * ;
+x y ( R G ) : i 2dup z* ; 
+i i i log ( R G )
+.8 t 5 * sin .5 * + r - ( R G B )
+1.7 r - ( R G B T )</textarea>
+</span>
+<b>alive Z  virus</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDA8saTCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDA8saTCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: r x 0.5 - 2 ** y 0.5 - 2 **  + sqrt ;
+: z 0.25 r 1.2 ** - sqrt r 0.5 &lt; * ;
+x 0.3 - t 2 * sin 2 / .5 + * y 0.3 - t 3 * sin 2 / .5 +  * z 0.5 * + + r 0.3 &lt; *  dup dup</textarea>
+</span>
+<b>boring grey ball Redux</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDA5NuTCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDA5NuTCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">\　square
+x .1 &gt; x .9 &lt; and
+y .1 &gt; y .9 &lt; and and ( red )
+</textarea>
+</span>
+<b>square</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAj6aUCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAj6aUCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">\ light
+x .5 - .5 * dup * 
+y .5 - .5 * dup *
++ sqrt
+1 swap -</textarea>
+</span>
+<b>dark Redux</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAjteUCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAjteUCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: i 2dup z* log ; 
+x .5 - t .9 * sin +
+y .5 - t .2 * sin +
+i i i log over</textarea>
+</span>
+<b>Flying in Flowers</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAy_2UCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAy_2UCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: t t 2 / ;
+: x x .5 - ; : y y .5 - ;
+: r x 2 ** y 2 ** + sqrt ;
+: a y x atan2 ;
+: 反 1 swap - ;
+: 暈 sqrt 反 ;
+: 板 .15 &lt; 反 ;
+: 線 abs .2 &lt; ;
+: 圈 &gt;r a * t + sin r .35 - r&gt; 100 / / - ;
+1 6 圈 線 \ 紅
+3 3 圈 暈 \ 綠
+4 7 圈 板 4 9 圈 暈 + \ 藍
+r .2 - 暈 \ 透</textarea>
+</span>
+<b>圈 線 暈 板</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDAkJmVCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDAkJmVCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: x x .5 - 4 * t .9 * sin + ;
+: y y .5 - 4 * t .2 * sin + ;
+: r x x * y y * + sqrt ;
+x y ( R G ) : i 2dup z* ; 
+i i i log ( R G ) .8 r - ( R G B )
+1.7 r - ( R G B T )</textarea>
+</span>
+<b>Z virus</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAjeWVCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAjeWVCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: ⚊ x .5 - t cos * y .5 - t sin * - ;
+: ⚋ x .5 - t sin * y .5 - t cos * + ;
+: √ sqrt ;
+: □ 2 pow ;
+: b&amp;w dup dup ;
+
+: r .3 t sin .15 * + ; : s 1.3 ;
+: r2 r 2 / ; : r3 r 6 / ; : s2 s 2 * ;
+  .4
+  ⚊ □ ⚋        □ + √ r   &lt;  ⚊ 0 &lt; if + else - then
+  ⚊ □ ⚋ r2 - □ + √ r2 &lt;   s * +
+  ⚊ □ ⚋ r2 + □ + √ r2 &lt;   s * -
+  ⚊ □ ⚋ r2 + □ + √ r3 &lt;   s2 * + 
+  ⚊ □ ⚋ r2 - □ + √ r3 &lt;   s2 * -
+  b&amp;w</textarea>
+</span>
+<b>Dao Redux</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDAzJqXCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDAzJqXCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">x x 23 * sin 2 / y .2 - max / sin
+y x 23 * sin 2 / y .3 - max / sin
+over over / sin
+x 0.5 - 2 * dup * y 0.5 - 2 * dup * + 10 pow 1 swap -</textarea>
+</span>
+<b>橋頭江畔遠山晨曦</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDAkpCYCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDAkpCYCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: sq dup * ;
+: x x .5 - ; : y y .5 - ;
+: r x sq y sq + sqrt .11 - ;
+: t 1.2 t * * sin ;
+: lx .7 t ; : ly .5 t ;
+: lr lx sq ly sq + .14 + sqrt ;
+: z r / r 30 * sin .7 * * ;
+: m lr / * 0 max ;
+x z lx m y z ly m dup</textarea>
+</span>
+<b>陰陽共生</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICA1ZeYCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICA1ZeYCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: x x .5 - ; : y y .6 - ;
+: r x x * y y * + sqrt ; r .3 &gt;
+x y * abs &gt;r  r@ .01 &lt; or
+r@ .003 &lt;
+r&gt; .001 &lt;
+1 r -</textarea>
+</span>
+<b>The Cross</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAupuYCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAupuYCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: x x 2 * ; : y y 2 * 1 - ;
+: n 12 ; \ number of spikes
+: alpha pi 10 / ; \ half of spike angle
+: x0 0.5 ;
+: y0 0.5 ;
+: r0 0.3 ;
+: theta x x0 - y y0 - atan2 pi + ;
+: r x x0 - dup * y y0 - dup * + sqrt ;
+: beta theta pi n / 2 * mod pi n / - abs ;
+: b r0 alpha sin * alpha cos beta sin * beta cos alpha sin * + / ;
+b r &gt; r .17 &gt; and r .1 &lt; or &gt;r
+r@ x 1 &gt; or y 0 &lt; or \ red
+r&gt; \ green
+y 0 &gt; x 1 &lt; and \ blue</textarea>
+</span>
+<b>Flag of ROC</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDAiteYCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDAiteYCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">\ F. 時鐘
+\ 新增指令 \\\\\\\\\\\\\\\\\\\
+: 2pi pi pi + ;
+: r \ 中心到 x,y 的距離, 1 到邊
+ x .5 - x .5 - * y .5 - y .5 - *
+ + sqrt ;
+: a \ 中心到 x,y 的角度, 0 到 1
+  y .5 - x .5 - atan2
+  pi + pi / 2 / ;
+: 分 t 60 / ; : 時 分 60 / ;
+: 格 / + 1 mod ;
+: 反 1 swap - ;
+: 間 ( x L U -- b ) \ x 在 L U 間
+  &gt;r over r&gt; &lt; &gt;r &gt; r&gt; and ;
+\ 紅色盤面 \\\\\\\\\\\\\\\\\\\
+ 0 \ 紅色亮度 0
+ .5 + \ 紅色亮度 .5
+ x    y    * .001 &gt; * \ 右下黑
+ x 反 y    * .001 &gt; * \ 左下黑
+ x    y 反 * .001 &gt; * \ 右上黑
+ x 反 y 反 * .001 &gt; * \ 左上黑
+ dup push
+ .3 \ 綠色亮度 .3
+ x    y    * .009 &gt; * \ 右下紅
+ x 反 y    * .009 &gt; * \ 左下紅
+ x    y 反 * .009 &gt; * \ 右上紅
+ x 反 y 反 * .009 &gt; * \ 左上紅
+ + \ 增中間紅色亮度為 .8
+ .2 \ 綠色亮度 .2
+ x    y    * .022 &gt; * \ 右下紅
+ x 反 y    * .022 &gt; * \ 左下紅
+ x    y 反 * .022 &gt; * \ 右上紅
+ x 反 y 反 * .022 &gt; * \ 左上紅
+ + \ 增中間紅色亮度為 1
+ r .39 &gt; * \ 半徑 .39 紅洞
+ r .08 &lt; + \ 半徑 .08 紅圓 )
+\ 紅色秒針 \\\\\\\\\\\\\\\\\\\
+: 秒針 a .25 + \ 修正 角度 0 向上
+ t 60 格 \ 每秒 1/60 圈
+ .005 &lt; \ 秒針寬度
+ r .1 .37 間 * \ 加上秒針
+; 秒針 + \ 顯示 紅色秒針
+\ 綠色時標 \\\\\\\\\\\\\\\\\\\
+: 時標 12 2pi * \ 12 週期
+ a * cos \ 餘旋波
+ .95 &gt; \ 振幅大於 .95 定 時標長
+ r .41 .425 間 * \ 定 時標寬
+; 時標 \ 綠時標 (加紅色呈黃色)
+\ 綠色分針 \\\\\\\\\\\\\\\\\\\
+: 分針 a .25 + \ 修正 角度 0 向上
+ 分 60 格 \ 每時角 0 到 1
+ .005 &lt; \ 分針寬度
+ r .1 .32 間 * \ 加上秒針
+; 分針 + \ 顯示 綠色秒針
+\ 藍色時針 \\\\\\\\\\\\\\\\\\\
+: 時針 a .25 + \ 修正 角度 0 向上
+ 時 12 格 \ 每 12 小時 角 0 到 1
+ .005 &lt; \ 時針寬度
+ r .1 .3 間 * \ 加上秒針
+; 時針 \ 顯示 藍色秒針
+pop 2 *
+\ )</textarea>
+</span>
+<b>時鐘</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDAsp6ZCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDAsp6ZCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: x x 2 * ; ( x 從 0 到 1 變為 從 0 到 2 )
+: y y 2 * ; ( y 從 0 到 1 變為 從 0 到 2 )
+: x x 1 - ; ( x 從 0 到 2 變為 從 -1 到 1 )
+: y y 1 - abs ; ( y 從 0 到 2 變為 從 1 到 0 到 1 )
+: a x y atan2 ; ( a 為 0,0 到 x,y 的 角度 )
+( a cos 為 0,0 到 x,y 的 距離為 1 時之 餘旋 )
+y abs a cos &lt;  ( 紅 pizza )
+dup ( 綠 pizza ) dup ( 藍 pizza )
+
+</textarea>
+</span>
+<b>pizza Redux Redux</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAzquaCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAzquaCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: x x .5 - ; : y y .5 - ; \ 原點
+: r x x * y y * + sqrt ;  \ 距離
+r .3 &gt;                \ R 紅圓框
+x .07 - y / abs 1 r - * \ G 綠光
+.6 r - r .2 &lt; *         \ B 藍圓
+r .5 &lt;                \ 透視彩圓</textarea>
+</span>
+<b>color circle</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDA0MGbCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDA0MGbCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">\ 點線測試 ( 過兩點直線維持 固定粗細 )
+
+: 線粗 .01 ; 
+
+\ 2 倍 圓周率
+: 2pi pi pi + ;
+
+\ 從 rstack 取出 a b 到 dstack
+: 2&gt;r \ a b ; -- ; b a
+  &gt;r &gt;r ;
+
+\ 從 rstack 取出 a b 到 dstack
+: 2r&gt; \ ; b a -- a b ;
+  r&gt; r&gt; ;
+
+\ 從 rstack 複製 a b 到 dstack
+: 2r@ \ ; b a -- a b ;
+  r&gt; dup r@ rot &gt;r ;
+
+\ dstack 上 兩對數 位置互換
+: 2swap \ a b c d -- c d a b
+  &gt;r -rot r&gt; -rot ;
+
+\ 複製 dstack 第二對數
+: 2over \ a b c d -- a b c d a b
+  2&gt;r 2dup 2r&gt; 2swap ;
+
+\ 複製 dstack 上 4 個數
+\ ( a b c d -- a b c d a b c d )
+: 4dup 2over 2over ;
+
+\ v"=L if v&lt;L, v"=U if v&gt;U
+: 間 ( v L U -- v" )
+  2dup &gt; if swap then
+  &gt;r ( v L )
+  max r&gt; ( v' U )
+  min ( v" ) ;
+ 
+\ 0 到 1 變化的 f 放大 n 倍取 小數
+: 摺 ( f n -- f ) \ f 的 n 摺
+  * 1 mod ;
+
+\ f 等於 v 的 線
+: 線 ( f v d -- 線 ) \ f=v 線
+  -rot - abs &gt; ;
+
+\ 過 x1,y1 與 x2,y2 的 直線 或 點
+: 兩點線 ( x1 y1 x2 y2 -- 線 )
+  &gt;r over r&gt; ( x1 y1 x2 y1 y2 )
+  - ( x1 y1 x2 y1-y2 )
+  &gt;r ( x1 y1 x2 )
+  &gt;r over r&gt; ( x1 y1 x1 x2 )
+  - ( x1 y1 x1-x2 ) dup
+  if \ x1-x2&lt;&gt;0 非垂直線
+   r&gt; swap ( x1 y1 y1-y2 x1-x2 )
+   / ( x1 y1 斜率 )
+   &gt;r swap r@ * - ( y軸交點 )
+   r@ ( y軸交點 斜率 )
+   x * + y ( y軸交點+斜率*x y )
+   r&gt; 2 ** 1 + sqrt
+ \ 線粗修正係數 斜率平方加一後開根號
+   線粗 2 / * 線
+  else \ x1-x2=0 垂直線 或 一個點
+   drop r&gt; ( x1 y1 y1-y2 )
+   if \ y1-y2&lt;&gt;0 垂直線
+    drop x ( x1 x ) 線粗 2 / 線 
+   else \ y1-y2=0 一個點
+    ( x1 y1 ) y 線粗 2 / 線 swap x 線粗 2 / 線 *
+   then
+  then ;
+
+\ 在點 p1 角度為 a1 的 方向
+: 點角向 \ x1 y1 a1 -- 方向
+  .25 - \ 向上
+  2pi * \ 值域 -pi 到 pi
+  &gt;r y - 
+  swap x - atan2 r&gt; +
+  pi + cos
+  dup 0 &lt; if drop 0 then ;
+
+\ 在點 p1 角度為 a1 方向 的 線
+: 點角線 \ x1 y1 a1 -- 線
+  &gt;r
+  2dup r@ .5 + 點角向
+  -rot swap \ m y1 x1
+  r&gt; .25 - \ 向上
+  2pi * \ 值域 -pi 到 pi
+  dup &gt;r
+  sin x rot - * \ m y1 fx
+  swap \ m fx y1
+  r&gt; cos y rot - * \ m fx fy
+  + abs 1.003 - 200 **
+  \ m 角a心線 
+  * 0 1 間 ;
+
+\ p1 到 p2 的連線 角度
+: 兩點角 ( x1 y1 x2 y2 -- 角 )
+  &gt;r swap r&gt; - \ x1 x2 y1-y2
+  -rot - swap \ x1-x2 y1-y2
+  atan2 2pi / ;
+
+\ p1 到 p2 的連線 方向
+: 兩點向 2over 兩點角 點角向 ;
+
+\ p1 到 p2 的連線
+: 兩點連線 \ x1 y1 x2 y2 -- 線
+  4dup 兩點線 \ x1 y1 x2 y2 線
+  &gt;r \ x1 y1 x2 y2
+  4dup 兩點向 \ x1 y1 x2 y2 向1
+  &gt;r \ x1 y1 x2 y2
+  2swap 兩點向 \ 向2
+  r&gt; r&gt; * * ;
+
+\ p0 x0,y0 到 任意點 p x,y 的 距離
+: r \ x0 y0 -- r
+  y - dup * swap x - dup *
+  + sqrt ;
+
+\ p0 x0,y0 到 任意點 p x,y 的 角度
+: a \ x0 y0 -- a
+  y swap - swap x swap - atan2
+  2pi / ;
+
+\ 中心點 p0 及 測試點 p1 p2 p3
+: p0 .5 .5 ; : p1 .6 .8 ;
+: p2 .1 .4 ; : p3 .7 .2 ;
+
+0 \ 紅色亮度 0
+
+\ ( 測試0 底圖 10*10 格線
+: 底圖格線
+  x 10 摺 .05 &lt;  y 10 摺 .05 &lt;
+  + ;
+  底圖格線 +
+\ )
+
+\ ( 測試1 p1 與 p2 的連線
+  p1 p2 兩點連線 +
+\ )
+
+\ ( 測試2 p0 線 與 p1 到 p2 同方向 
+: a1 p1 p2 兩點角 ;
+  p0 a1   \ t 10 / +      \ 順時鐘慢轉
+  點角線  \ p0 r .5 &lt; * \ 長度 .5
+  +
+\ )
+
+\ ( 測試3 p2 與 p3 的連線
+  p2 p3 兩點線
+  p2 p3 兩點向
+  p3 p2 兩點向 * * +
+\ )
+
+\ ( 測試4 p1 與 p3 的連線
+: a3 p3 p1   兩點角 ;
+  p1 p3      兩點線
+  p1 a3      點角向 * 
+  p3 a3 .5 + 點角向 * +
+\ )
+
+\ ( 測試5 圓與洞
+: 圓 r .03 &lt; ;
+: 反 1 swap - ;
+: 洞 圓 反 ;
+  p0 圓 + p1 圓 - p2 圓 -
+0 p1 圓 +
+0 p2 圓 +
+0 p3 洞 +
+\ )</textarea>
+</span>
+<b>點線測試 Redux</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDA1P-cCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDA1P-cCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">\ wind tunnel 風洞
+: x x 2 * ; \ x 從 0 到 1 變成 從 0 到 2
+: y y 2 * ; \ y 從 0 到 1 變成 從 0 到 2
+: x x 1 - ; \ x 從 0 到 2 變成 從 -1 到 1
+: y y 1 - ; \ y 從 0 到 2 變成 從 -1 到 1
+: r x x * y y * + sqrt ; \ x,y 到原點的距離
+: 度 pi 180 / * ; \ 角度轉徑度
+: 反 1 min 1 swap - ; \ 亮度反轉 
+: a y x atan2 ; \ x,y 角度 從 -180 到 180
+r 1 &lt; \ 半徑 1 紅圓
+r .25 &gt; and \ 半徑 .25 圓洞, 變紅圈 .75 寬
+r 1 8 / mod .1 &gt; and \ 8 紅圈 .025 寬
+r .25 &gt; r .375 &lt; and or \ 另 紅圈 .125 寬
+: a a t 360 mod 度 + ; \ 角度每秒偏轉 1
+a 360 度 9 / mod 6 度 &lt; \ 9 放射線, 6 度寬
+r .25 &gt; and \ 綠方圓洞
+r .25 &gt; r .375 &lt; and or \ 另 綠圈 .125 寬
+r .375 &lt; \ 半徑 .375 藍圓
+r 1 &lt; \ 半徑 1 圓洞內 透視度 1
+r t 4 * cos 2 / 2 + pow * \ 透視中心 0 外圍 1</textarea>
+</span>
+<b>wind tunnel</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDA5LGdCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDA5LGdCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: s swap ; : 亮 ( x y -- p )
+  s x s - 2 ** s y s - 2 **
+  + sqrt 0.02 s / ;
+.5 .45 亮 .35 .6 亮 .65 .6 亮
++ 1 t - 5 / dup floor - *</textarea>
+</span>
+<b>綠眼</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICA2sCdCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICA2sCdCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: x x t sin + .7 mod ;
+: l y t 3 * sin abs 2 / -
+48 * floor = * 2 x .37 - 48 * floor ** floor / 2 mod + ;
+: lp
+0 28672 15 l 28672 14 l 24576 13 l 1408 12 l
+3536 11 l 15248 10 l 480 9 l 4064 8 l
+3 5 l 2311 4 l 2 3 l 1 &gt;= ;
+: lw
+0 992 14 l 8176 13 l 1088 7 l 2176 6 l 3968 5 l
+5872 4 l 8176 3 l 8160 2 l 1008 1 l 112 0 l 1 &gt;= ;
+: lg
+0 29296 12 l 29224 11 l 17512 10 l 15896 9 l
+4096 8 l 3004 7 l 18302 6 l 16508 5 l
+24576 4 l 24584 3 l 24604 2 l 14 1 l 2 0 l 1 &gt;= ;
+
+( www.thesands.ru/forth-demotool )
+
+lp lw dup dup &gt;r &gt;r over + swap 1.5 / lg 1.5 / + r&gt; +
+2dup + 0 = 7 / r&gt; +</textarea>
+</span>
+<b>Two Luigi Hanging</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAzN6dCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAzN6dCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: ss 2dup z* ;
+x y ss t sin x ss
+z* t 6 * cos ss</textarea>
+</span>
+<b>Up Down hanging</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAz9eeCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAz9eeCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">\ F. 時鐘
+: 秒 t floor ; \ 捨小數 取整數 
+: 分 t 60 / ;
+: 時 t 3600 / ;
+: 2pi pi pi + ;
+: 反 1 swap - ;
+: 間 ( x L U -- b ) \ x 在 L U 間
+  &gt;r over r&gt; &lt; &gt;r &gt; r&gt; and ;
+: r \ 中心到 x,y 的距離, 1 到邊
+  x .5 - dup * y .5 - dup *
+  + sqrt ;
+: a \ 中心到 x,y 的角度, 0 到 1
+  y .5 - x .5 - atan2
+  pi + pi / 2 / ;
+: 格 ( t -- 線 ) \ 中心發 角a線
+  / .25 + \ 0 向上
+  1 mod .5 - \ 值域 -1 到 1
+  2pi * \ 值域 -pi 到 pi
+  &gt;r \ 角度儲存備用
+  r@ sin x .5 - *
+  r@ cos y .5 - *
+  + abs 1 - 150 ** \ 角 a 中心線 
+  r&gt; 2pi / a + .5 - 2pi * cos
+  * ; \ 去除 角 a+pi 線段
+: 秒針
+  秒 60 格 \ 每秒走 1/60 圈
+  r .05 .37 間 * \ 秒針起訖端點
+  r .03 .05 間 + \ 中心紅圈
+; 秒針 \ 顯示 紅色秒針
+: 秒標 60 2pi * \ 60 週期
+  a * cos \ 餘旋波
+  .97 &gt; \ 振幅大於.97 設定 時標 長
+  r .41 .425 間 * \ 設定 時標 寬
+; 秒標 + \ 紅色秒標
+: 分針
+  分 60 格 \ 每分走 1/60 圈
+  r .07 .32 間 * \ 分針起訖端點
+  r .05 .07 間 + \ 中心綠圈
+; 分針 \ 顯示 綠色分針
+: 時標 12 2pi * \ 12 週期
+  a * cos \ 餘旋波
+  .97 &gt; \ 振幅大於.97 設定 時標 長
+  r .41 .425 間 * \ 設定 時標 寬
+; 時標 + \ 綠色時標
+: 時針
+  時 12 格 \ 每時走 1/12 圈
+  r .09 .3 間 * \ 時針起訖端點
+  r .07 .09 間 + \ 中心藍圈
+; 時針 \ 顯示 藍色時針
+: 框 ( v -- 框 )
+  x    y    * .001 &gt; * \ 右下黑
+  x 反 y    * .001 &gt; * \ 左下黑
+  x    y 反 * .001 &gt; * \ 右上黑
+  x 反 y 反 * .001 &gt; * \ 左上黑
+; .5 框 \ 亮度 .5
+\ 藍色盤面 \\\\\\\\\\\\\\\\\\\
+ .3 \ 亮度 .3
+ x    y    * .009 &gt; * \ 右下紅
+ x 反 y    * .009 &gt; * \ 左下紅
+ x    y 反 * .009 &gt; * \ 右上紅
+ x 反 y 反 * .009 &gt; * \ 左上紅
+ + \ 增中間亮度為 .8
+ .2 \ 綠色亮度 .2
+ x    y    * .022 &gt; * \ 右下紅
+ x 反 y    * .022 &gt; * \ 左下紅
+ x    y 反 * .022 &gt; * \ 右上紅
+ x 反 y 反 * .022 &gt; * \ 左上紅
+ + \ 增中間紅色亮度為 1
+ r .39 &gt; * + \ 半徑 .39 洞
+1 框</textarea>
+</span>
+<b>時鐘 Redux</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAyeieCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAyeieCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: i 2dup z* log ;
+1 x - .5 - t .9 * sin +
+  y   .5 - t .2 * sin +  
+i i i log over</textarea>
+</span>
+<b>Flying in Flowers</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDA9OyeCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDA9OyeCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: 2pi pi pi + ; \ 2 倍 圓周率
+: 2/ 2 / ; : 1- 1 - ;
+: 線 ( r v -- 線 ) \ r=v 線
+  - abs .01 &lt; ;
+
+: 摺 ( v n -- v ) \ v 的 n 摺 對應值
+  * 1 mod ;
+
+: 兩點線 ( x1 y1 x2 y2 -- line )
+  &gt;r over r&gt; ( x1 y1 x2 y1 y2 )
+  - ( x1 y1 x2 y1-y2 )
+  &gt;r ( x1 y1 x2 )
+  &gt;r over r&gt; ( x1 y1 x1 x2 )
+  - ( x1 y1 x1-x2 ) dup
+  if
+   r&gt; swap ( x1 y1 y1-y2 x1-x2 )
+   / ( x1 y1 a )
+   &gt;r swap r@ * - r&gt; ( b a )
+   x * + y 線 
+  else drop r&gt; ( x1 y1 y1-y2 )
+   if drop x 線 
+   else ( x1 y1 ) y 線
+    swap x 線 *
+   then
+  then ;
+: 線粗 .01 ;
+: 點角向 \ x1 y1 a -- 圖
+  .25 - \ 向上
+  1 mod
+  2pi * \ 值域 -pi 到 pi
+  &gt;r y - swap x - atan2 r&gt; +
+  pi + cos ;
+: 點角線 \ x0 y0 a -- 圖
+  .25 - \ 向上
+  1 mod
+  2pi * \ 值域 -pi 到 pi
+  &gt;r
+  2dup r@ 點角向
+  -rot swap \ m y0 x0
+  r@ sin x rot - * \ m y0 fx
+  swap \ m fx y0
+  r&gt; cos y rot - * \ m fx fy
+  + abs 1- 線粗 2/ - 15000 **
+  \ m 角a心線 
+  * ;
+
+
+: x1 .1 ; : y1 .4 ;
+: x2 .6 ; : y2 .8 ;
+: a1 x2 x1 - y2 y1 - atan2
+  2pi / ;
+\ 紅色參考格線
+  x 10 摺 .05 &lt;
+  y 10 摺 .05 &lt; +
+\ 綠色點角線
+  .5 .5 a1 點角線 +
+\ 綠色兩點線
+  x1 y1 x2 y2 兩點線
+\ 藍色兩點區間
+  x1 y1 a1 .5 + 點角向
+  x2 y2 a1 點角向 *
+\ )</textarea>
+</span>
+<b>兩點線</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAtdXDCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAtdXDCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: d t 20 mod ; : xo x .5 - ; : yo y .5 - ; 
+: x yo ; : y xo ;
+: a x y atan2 d 10 / pi * - 2 pi * mod ;
+: p a swap pi 10 / * ;
+: &gt; p &gt; ; : &lt; p &lt; ;
+1 &gt;  4 &lt;  and
+1 &gt;  2 &lt;  and  3 &gt;  5 &lt; and or
+0 &gt; 1 &lt;  and 3 &gt;  4 &lt;  and  or
+
+
+
+</textarea>
+</span>
+<b>Flag of Seychelles Redux Redux</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAi_rGCgw">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAi_rGCgw">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">x \ 紅光亮度橫向變化從左到右從 0 到 1
+y \ 綠光亮度縱向變化從下到上從 0 到 1
+t dup floor - \ 藍光亮度每秒變化從 0 到 1
+</textarea>
+</span>
+<b>Ricky's first Haiku Redux Redux</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICA2p6KCww">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICA2p6KCww">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: n 21 ;
+: x x .5 - ; : y y .5 - ;
+: r x x * y y * + sqrt ;
+: f n 2 / floor ;
+: q sin f * n 2 / ceil + ;
+: th x y atan2 t q * ;
+: tr th cos th 3 * cos 9 / - th 5 * cos 25 / + ;
+: st 0.2 tr 15 / + r &gt; ;
+: b * sin 2 / .5 + * ;
+: r st t .33 b ;
+: g st t .55 b ;
+: b st t .77 b ;
+r g b</textarea>
+</span>
+<b>Daisy Redux</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAj9GNCww">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgICAj9GNCww">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: n 21 ;
+: x x .5 - ; : y y .5 - ;
+: r x x * y y * + sqrt ;
+: f n 2 / floor ;
+: q sin f * n 2 / ceil + ;
+: th x y atan2 t q * ;
+: tr th cos th 3 * cos 9 / - th 5 * cos 25 / + ;
+: st 0.2 tr 15 / + r &gt; ;
+: b * sin 2 / .5 + * ;
+: c r 3 * ;
+: r st t 3 b ;
+: g st t 5 b ;
+: b st t 7 b ;
+r g b c</textarea>
+</span>
+<b>Daisy Redux Redux</b></a>
+<i>陳爽</i>
+</div>
+
+<a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDA5LGdCww">
+</a><div class="haiku" style="cursor: pointer;"><a href="http://forthsalon.appspot.com/haiku-view/ahBzfmZvcnRoc2Fsb24taHJkchILEgVIYWlrdRiAgIDA5LGdCww">
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">: c cos 9 / + ; : x x .5 - t c ;
+: y y .5 - pi 2 / t + c ;
+: s sin 2 / ; : q t * s + ;
+: r x y 2dup z* + sqrt 8 * t 3 * -
+  s ; r .5 q ( R ) r .6 q ( G )
+  r .7 q ( B )</textarea>
+</span>
+<b>shinging cross</b></a>
+<i>陳爽</i>
+</div>
+
+<span name="haiku" width="128" height="128">
+<textarea style="display: none">
+\ 按 A 向右 D 向左 W 前進 S 開火
+: b button ;
+: 向左 5 b ; : 向右 1 b ;
+: 向前 2 b ; : 開砲 3 b ;
+
+:   方向 1 @ ;
+: 定方向 1 ! ;
+: x位置 2 @ ; : y位置 3 @ ;
+:   位置 2 @ 3 @ ;
+: 定位置 3 ! 2 ! ;
+:   速度 4 @ 5 @ ;
+: 定速度 5 ! 4 ! ;
+:   砲彈方向 6 @ ;
+: 定砲彈方向 6 ! ;
+:   x砲彈位置 7 @ ;
+: 定x砲彈位置 7 ! ;
+:   y砲彈位置 8 @ ;
+: 定y砲彈位置 8 ! ;
+:   砲彈位置 7 @ 8 @ ;
+: 定砲彈位置 8 ! 7 ! ;
+: 砲彈速度
+  砲彈方向 sin dt * 2 *
+  砲彈方向 cos dt * 2 * ;
+: 加速度
+  向前 dt * 200 / dup
+  方向 sin * swap 方向 cos * ;
+: 轉角
+  向左 dt * 3 *
+  向右 dt * 3 * - ;
+
+\ 幽暗太空
+0
+
+\ ( 繁星點點
+x y ** 56 * sin
+31 * dup floor -
+1000 * 999 - 0 max
++ \ )
+
+\ ( 翱翔太空
+加速度 速度 z+ 定速度
+位置   速度 z+ 定位置
+方向 轉角 + 定方向
+x .5 -  y .5 -  位置 z+
+方向 cos 方向 sin z* 2dup
+.05 + atan2 abs .4 < -rot
+.01 - atan2 abs 1 < - 0 max
++ \ )
+
+\ ( 砲彈發射
+砲彈速度 砲彈位置 z+ 定砲彈位置
+開砲 if 方向 定砲彈方向
+        位置 定砲彈位置 then
+x砲彈位置 .5 x - - dup *
+y砲彈位置 .5 y - - dup *
++ .00003 < 
++ \ )
+dup x</textarea>
+</span>
+<b>Asteroids redux</b></a>
+<i>陳爽</i>
+</div>
+
+
+</div>
+
+<div id="footer">
+<a href="http://forthsalon.appspot.com/">Home</a>
+<a href="http://forthsalon.appspot.com/haiku-editor">Haiku Editor</a>
+</div>
+
+</div>
+
+<script type="text/javascript" src="./ForthHaikuSalon_files/haiku.js"></script>
+<script type="text/javascript">
+function init() { var xx;
+  animate_haikus(function() {
+  	xx++;
+//	console.log('init done')
+  });
+}
+</script>
+
+</body></html>

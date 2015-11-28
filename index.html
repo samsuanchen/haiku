@@ -20,6 +20,7 @@
   padding: 1em;
 }
 </style>
+<textarea id="shader_code" rows="10" style="width: 95%; height:100; resize:both"></textarea><input type="checkbox" id="cbExeShader" onchange="update()">exeShader<br>
 <div class="section">
 <span id="editimage" name="haiku"
     width="256" height="256">
@@ -511,11 +512,11 @@ p0 角 0 .1 間 \ 角度 -180 到 36 B
 $(document).ready(function(){
    var $textareas = $('textarea#src_code');
    // restore textarea size
-   var h=localStorage.getItem('src_code.style.height');
-   if(h){
-   		var w=localStorage.getItem('src_code.style.width' );
-   		$textareas.outerWidth(w), $textareas.outerHeight(h); 
-   }
+// var h=localStorage.getItem('src_code.style.height');
+// if(h){
+// 		var w=localStorage.getItem('src_code.style.width' );
+// 		$textareas.outerWidth(w), $textareas.outerHeight(h); 
+// }
    var t=localStorage.getItem('src_code.scrollTop');
    if(t)
    		src_code.scrollTop=t;
@@ -553,7 +554,13 @@ function saveSize(){
 	localStorage.setItem('src_code.style.height',
 		src_code.style.height);
 }
-function update() {
+function update(e) {
+    if(cbExeShader.checked && event.target.id==='shader_code'){
+    	setTimeout(function(){
+    		renderShader(document.getElementsByName('haiku')[0].children[1],shader_code.value);
+    	},0);
+    	return;
+    }
 	dst_code.value = src_code.value;
 	update_tags();
 }
@@ -578,6 +585,8 @@ function init() {
 //2. 輸入格 新增 onpaste 及 onkeyup 自動 update, 編譯並執行
      src_code.onpaste=function(event){update()};
      src_code.onkeyup=function(event){update()};
+     shader_code.onpaste=function(event){update()};
+     shader_code.onkeyup=function(event){update()};
 
 //3. 在 canvas 增加 onmousemove 顯示滑鼠位置
      var canvas0=document.getElementsByTagName('canvas')[0];

@@ -1,0 +1,84 @@
+a:link {
+  color: white;
+  text-decoration: none;
+}
+
+a:visited {
+  color: white;
+  text-decoration: none;
+}
+
+a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+body {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  background-color: #000000;
+  color: #cccccc;
+  padding: 0;
+  margin: 0;
+}
+
+#wrapper { 
+  background-color: #000000;
+}
+
+#wrapper h1 {
+  font-size: 20px;
+}
+
+#header {
+  background-color: #333333;
+  color: #cccccc;
+  text-align: left;
+  padding: 0.5em;
+}
+
+#footer {
+  background-color: #333333;
+  color: #cccccc;
+  margin-top: 0px;
+  padding: 0px;
+  text-align: left;
+}
+
+div.links a {
+  padding: 1em;
+  display: inline-block;
+}
+
+#footer a {
+  padding: 1em;
+  display: inline-block;
+}
+
+#footer span {
+  padding: 1em;
+  display: inline-block;
+}
+
+#wrapper h2 {
+  color: #333333;
+}
+
+div.section {
+  background-color: #777777;
+  background-image: url('./back.png');
+  border-style: solid;
+  border-width: 0;
+  border-color: #000000;
+  margin: 2px 0px;
+  padding: 1em;
+}
+
+div.article {
+  margin: .5em;
+  color: #000000;
+}
+
+pre {
+  font-weight: bold;
+};
