@@ -20,7 +20,10 @@
   padding: 1em;
 }
 </style>
-<textarea id="shader_code" rows="10" style="width: 95%; height:100; resize:both"></textarea><input type="checkbox" id="cbExeShader" onchange="update()">exeShader<br>
+<textarea id="shader_code" rows="10" style="width: 95%; height:100; resize:both"
+    onkeydown="updateShader()"
+    onkeyup="updateShader()"
+    onkeypress="updateShader()"></textarea><input type="checkbox" id="cbExeShader" onchange="update()">exeShader<br>
 <div class="section">
 <span id="editimage" name="haiku"
     width="256" height="256">
@@ -593,7 +596,15 @@ $(document).ready(function(){
    	  localStorage.setItem('src_code.scrollTop',src_code.scrollTop);
    }
 });
-
+var updateShader=function(){
+	setTimeout(function(){
+		var cv=document.getElementsByTagName('canvas')[0];
+		var code=shader_code.value, oldCode;
+		if(code===cv.oldCode) return;
+		cv.oldCode=code;
+		runShader(cv,code);
+	},0);
+}
 var f3=function (f){
 	var s=f.toString();
 	s=s.replace(/^0\./,'.'),s=s.substr(0,3);
@@ -607,12 +618,6 @@ function saveSize(){
 		src_code.style.height);
 }
 function update(e) {
-    if(cbExeShader.checked && event.target.id==='shader_code'){
-    	setTimeout(function(){
-    		renderShader(document.getElementsByName('haiku')[0].children[1],shader_code.value);
-    	},0);
-    	return;
-    }
 	dst_code.value = src_code.value;
 	update_tags();
 }

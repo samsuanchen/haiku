@@ -467,12 +467,11 @@ function setup3d(cv, cv3, code) {
     // Reject i9* for webgl, as its too slow.
     if (renderer.search(' i9') >= 0) throw 'i9* too slow';
   }
-  if(cbExeShader.checked){
-	  code=shader_code.value;
-  } else {
-	  code=make_fragment_shader(code);
-	  shader_code.value=code;
-  }
+  code=make_fragment_shader(code);
+  shader_code.value=code;
+  runShader(cv,code);
+}
+function runShader(cv,code){
   var fshader = gl.createShader(gl.FRAGMENT_SHADER);
   gl.shaderSource(fshader, code);
   gl.compileShader(fshader);
