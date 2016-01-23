@@ -24,11 +24,12 @@
     onkeydown="updateShader()"
     onkeyup="updateShader()"
     onkeypress="updateShader()"></textarea><input type="checkbox" id="cbExeShader" onchange="update()">exeShader<br>
-<div class="section">
+<div class="section"><table><tr><td>
 <span id="editimage" name="haiku"
     width="256" height="256">
 <textarea style="display: none" id="dst_code"></textarea>
-</span><span class="mouse">(0.0,0.0)</span>
+</span></td><td><div id="qrcode" style="width:256px; height:256px;"></div>
+</td></tr></table><span class="mouse">(0.0,0.0)</span>
 <textarea style="width: 100%; height:100; resize:both"
     onkeydown="update_tags()"
     onkeyup="update_tags()"
@@ -563,10 +564,15 @@ p2 c1  p1 c1  p6 c2  p5 c2
 
 <script type="text/javascript" src="haiku.js"></script>
 <script src="jquery.js"></script>
+<script src="qrcode.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-   var $textareas = $('textarea#src_code');
-   // restore textarea size
+	window.qrCode = new QRCode(document.getElementById("qrcode"), {
+		width  : 256,
+		height : 256
+	});
+	var $textareas = $('textarea#src_code');
+	// restore textarea size
 // var h=localStorage.getItem('src_code.style.height');
 // if(h){
 // 		var w=localStorage.getItem('src_code.style.width' );
@@ -619,6 +625,7 @@ function saveSize(){
 }
 function update(e) {
 	dst_code.value = src_code.value;
+	window.qrCode.makeCode(src_code.value); ///////////////////////////////////////
 	update_tags();
 }
 //0. 更新 update_tag, 用localStorage.setItem 隨時備存 程式碼

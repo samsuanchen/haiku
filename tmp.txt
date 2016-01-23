@@ -1,0 +1,144 @@
+滑鼠右鍵點 右下角 dlink 
+open [Network and Sharing Center]
+點右中 wi-fi2 (dlink)
+點左下 property
+中 選 最下 internet Protocal Version 4 (tcp/ipv4)
+點下 property
+Preferred DNS Server
+8.8.4.4  8.8.8.8 (google)
+168.95.1.1  168.95.192.1  (中華電信)
+
+1040325 廖石棋 1000
+1040506 林春木 1000
+1040702        1000
+1040706        1000
+
+code x ( -- 橫座標 )
+\ 橫座標 實數值域 0.0 <= x < 1.0 畫面從 左邊 漸增到 右邊
+  dstack.push(xpos); end-code
+code y ( -- 縱座標 )
+\ 縱座標 實數值域 0.0 <= y < 1.0 從 畫面從 下邊 漸增到 上邊 
+  dstack.push(ypos); end-code
+code t ( -- 系統秒數 )
+\ 系統秒數 實數值域 0.0 <= t < 86400.0 時間從 午夜 漸增到 現在
+  dstack.push(time_val); end-code
+code push ( a -- )
+\ 備存 資料堆疊 取出的 a 放到 迴返堆疊
+  rstack.push(dstack.pop()); end-code
+code pop ( -- a )
+\ 取回 迴返堆疊的 a 放到 資料堆疊
+  dstack.push(rstack.pop()); end-code
+: >r ( a -- ) push ; \ 進迴返 取出 資料堆疊的 a 放進 迴返堆疊
+: r> ( -- a ) pop  ; \ 迴返出 迴返堆疊的 a 取出 放進 資料堆疊
+code r@ ( -- a ) 
+\ 複製迴返 將 迴返堆疊的 a 複製放進 資料堆疊
+  dstack.push(rstack[rstack.length-1]); end-code
+code dup ( a -- a a ) 
+\ 複製 將 資料堆疊 a 複製放進 資料堆疊
+  dstack.push(dstack[dstack.length-1]); end-code
+code over ( b a -- b a b )
+\ 複製次項 資料堆疊第二數 b 複製放進 資料堆疊
+  dstack.push(dstack[dstack.length-2]); end-code
+: 2dup ( b a -- b a b a ) over over ; \ 兩數複製
+code z+ ( d c b a -- d+b c+a )
+\ 複數相加 取出 資料堆疊的 d c b a 放進 資料堆疊 d+b c+a
+  dstack[dstack.length-3]+=dstack.pop(),dstack[dstack.length-3]+=dstack.pop(); end-code
+code z* ( d c b a -- d*b -c*a )
+\ 複數相乘 取出 資料堆疊的 d c b a 放進 資料堆疊 d*b -c*a
+  dstack[dstack.length-3]*=dstack.pop(),dstack[dstack.length-3]*=-dstack.pop(); end-code
+code drop ( a -- )
+\ 丟棄 資料堆疊 a
+  dstack.pop(); end-code
+code swap ( b a -- a b )
+\ 對調 取出 資料堆疊的 b a 兩數次序 對調 放回 資料堆疊 a b
+  var a=dstack.pop(),b=dstack.pop(); dstack.push(a),dstack.push(b); end-code
+code rot ( c b a -- b a c )
+\ 轉 取出 資料堆疊的 c b a 將第三數 c 轉為首數 放回 資料堆疊 b a c
+  var a=dstack.pop(),b=dstack.pop(),c=dstack.pop(); dstack.push(b),dstack.push(a),dstack.push(c); end-code
+code -rot ( c b a -- a c b )
+\ 反轉 取出 資料堆疊的 c b a 將首數 a 反轉為 第三數 放回 資料堆疊 a c b
+  var a=dstack.pop(),b=dstack.pop(),c=dstack.pop(); dstack.push(a),dstack.push(c),dstack.push(b); end-code
+code = ( b a -- b=a? )
+\ 相等 取出 資料堆疊的 b a 相等就放 1 否則就放 0 進 資料堆疊
+  dstack.push((dstack.pop()==dstack.pop())?1.0:0.0); end-code
+code <> ( b a -- b<>a? )
+\ 不等 取出 資料堆疊的 b a 不等就放 1 否則就放 0 進 資料堆疊
+  dstack.push((dstack.pop() != dstack.pop())?1.0:0.0); end-code
+code < ( b a -- b<a? )
+\ 小於 取出 資料堆疊的 b a 小於就放 1 否則就放 0 進 資料堆疊
+  dstack.push((dstack.pop() > dstack.pop())?1.0:0.0); end-code
+code > ( b a -- b>a? )
+\ 大於 取出 資料堆疊的 b a 大於就放 1 否則就放 0 進 資料堆疊
+  dstack.push((dstack.pop() < dstack.pop())?1.0:0.0); end-code
+code <= ( b a -- b<=a? )
+\ 小於等於 取出 資料堆疊的 b a 小於等於就放 1 否則就放 0 進 資料堆疊
+  dstack.push((dstack.pop() >= dstack.pop())?1.0:0.0); end-code
+code >= ( b a -- b>=a? )
+\ 大於等於 取出 資料堆疊的 b a 大於等於就放 1 否則就放 0 進 資料堆疊
+  dstack.push((dstack.pop() <= dstack.pop())?1.0:0.0); end-code
+code + ( b a -- b+a )
+\ 相加 取出 資料堆疊的 a 加到資料堆疊的 b
+  dstack[dstack.length+2]+=dstack.pop(); end-code
+code * ( b a -- b*a )
+\ 相加 取出 資料堆疊的 a 乘到資料堆疊的 b
+  dstack[dstack.length+2]*=dstack.pop(); end-code
+code - ( b a -- b-a )
+\ 相加 取出 資料堆疊的 a 將 資料堆疊的 b 減去 a
+  dstack[dstack.length+2]-=dstack.pop(); end-code
+code / ( b a -- b/a )
+\ 相加 取出 資料堆疊的 a 將 資料堆疊的 b 除 a 
+  dstack[dstack.length+2]/=dstack.pop(); end-code
+code mod ( b a -- b%a )
+\ 取餘數 取出 資料堆疊的 a 將 資料堆疊的 b 除 a 取餘數
+  dstack[dstack.length+2]%=dstack.pop(); end-code
+code pow ( b a -- b**a )
+\ 取指數 在 資料堆疊 取 b a 計算 b 的 a 乘方
+  var a=dstack.pop(),b=dstack.pop(); dstack.push(Math.pow(b,a)); end-code
+: ** pow ( b a -- b**a ) ; \ 乘方 取 b a 計算 b 的 a 乘方
+code atan2 ( dx dy -- 角度 )
+\ 算角度 計算 dx dy 所對應 值域在 -pi 到 pi 之間的 角度
+  dstack.push(Math.atan2(dstack.pop(),dstack.pop())); end-code
+code and ( b a -- b&a )
+  dstack.push(dstack.pop()*dstack.pop()?1.0:0.0); end-code
+code or ( b a -- b|a )
+  dstack.push(dstack.pop()+dstack.pop()?1.0:0.0); end-code
+code not ( a -- !a )
+  dstack.push(dstack.pop()!=0.0?0.0:1.0); end-code
+code min ( b a -- min )
+  dstack.push(Math.min(dstack.pop(), dstack.pop())); end-code
+code max ( b a -- max )
+  dstack.push(Math.max(dstack.pop(), dstack.pop())); end-code
+code negate ( a -- -a )
+  dstack.push(-dstack.pop()); end-code
+code sin ( a -- v )
+  dstack.push(Math.sin(dstack.pop())); end-code
+code cos ( a -- v )
+  dstack.push(Math.cos(dstack.pop())); end-code
+code tan ( a -- v )
+  dstack.push(Math.tan(dstack.pop())); end-code
+code log ( a -- v )
+  dstack.push(Math.log(Math.abs(dstack.pop()))); end-code
+code exp ( a -- v )
+  dstack.push(Math.exp(dstack.pop())); end-code
+code sqrt ( a -- v )
+  dstack.push(Math.sqrt(Math.abs(dstack.pop()))); end-code
+code floor ( a -- v )
+  dstack.push(Math.floor(dstack.pop())); end-code
+code ceil ( a -- v )
+  dstack.push(Math.ceil(dstack.pop())); end-code
+code abs ( a -- v )
+  dstack.push(Math.abs(dstack.pop())); end-code
+code pi (  -- pi )
+  dstack.push(Math.PI); end-code
+code random ( -- v )
+  dstack.push(Math.random()); end-code
+code if'] = ['if(dstack.pop() != 0.0) {'];
+C:\ksana2015\haiku\haiku.js(128):   dict['else'] = ['} else {'];
+C:\ksana2015\haiku\haiku.js(129):   dict['then'] = ['}'];
+C:\ksana2015\haiku\haiku.js(322):       if (word == '(') {		// 20151101 sam for nesting paren
+C:\ksana2015\haiku\haiku.js(327):         if (word == ')') {
+C:\ksana2015\haiku\haiku.js(333):       if (word == '') {
+C:\ksana2015\haiku\haiku.js(337):       } else if (word == '\\') {
+C:\ksana2015\haiku\haiku.js(339):   //  } else if (word == '(') {	// 20151101 sam for nesting paren
+C:\ksana2015\haiku\haiku.js(342):       } else if (word == ':') {
+C:\ksana2015\haiku\haiku.js(349):       } else if (word == ';') {

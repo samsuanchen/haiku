@@ -295,13 +295,12 @@ void main(void) {
 	    finalColor = GetEnvColor2(rayVec, sunDir);// + vec3(0.1, 0.1, 0.1);
     }
 
-// gl_fragColor = vec4(sqrt(clamp(finalColor, 0.0, 1.0)),1.0); // */
+gl_FragColor = vec4(sqrt(clamp(finalColor, 0.0, 1.0)),1.0);
 
 vec2 o=vec2(.5,.5);
 float R=mod(a(o,tpos)*3.,1.);
 float G=0., B=0., A=d(o,tpos)<.4?1.:0.; //
 
-gl_FragColor = vec4(sqrt(clamp(finalColor, 0.0, 1.0)),1.0);
 
 //A=n(A), R=n(R)*A, G=n(G)*A, B=(B)*A;
 //gl_FragColor = vec4(R, G, B, A);
