@@ -568,13 +568,15 @@ p2 c1  p1 c1  p6 c2  p5 c2
 
 <script type="text/javascript" src="haiku.js"></script>
 <script src="jquery.js"></script>
-<script src="qrcode.js"></script>
+<!--<script src="qrcode.js"></script>-->
 <script type="text/javascript">
 $(document).ready(function(){
+/*
 	window.qrCode = new QRCode(document.getElementById("qrcode"), {
 		width  : 256,
 		height : 256
 	});
+*/
 	var $textareas = $('textarea#src_code');
 	// restore textarea size
 // var h=localStorage.getItem('src_code.style.height');
@@ -629,7 +631,7 @@ function saveSize(){
 }
 function update(e) {
 	dst_code.value = src_code.value;
-	window.qrCode.makeCode(src_code.value); ///////////////////////////////////////
+//	window.qrCode.makeCode(src_code.value); ///////////////////////////////////////
 	update_tags();
 }
 //0. 更新 update_tag, 用localStorage.setItem 隨時備存 程式碼
